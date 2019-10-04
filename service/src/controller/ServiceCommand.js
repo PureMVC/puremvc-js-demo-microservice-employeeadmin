@@ -54,7 +54,7 @@ ServiceCommand.prototype.execute = function(notification) {
 
                     if(request.method == "GET") {
                         serviceProxy.getAgent("role")
-                            .then(serviceProxy.getUserRolesById.bind(serviceProxy, parseInt(matches[1]))) // getUserRolesById(parseInt(matches[1]))
+                            .then(serviceProxy.getUserRolesById.bind(serviceProxy, parseInt(matches[1])))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else if(request.method == "PUT") {
                         serviceProxy.getAgent("role")
