@@ -72,7 +72,6 @@ Service.prototype.result = function(request, response, status, data) {
 };
 
 Service.prototype.fault = function(request, response, status, error) {
-    console.log(status, error);
     if(error == null) {
         response.writeHead(status, {"Content-Type": "application/json"});
         response.end(JSON.stringify({code: status || 500, message: "Internal Server Error"}));
