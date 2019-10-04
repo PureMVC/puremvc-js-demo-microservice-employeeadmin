@@ -125,38 +125,46 @@ ServiceProxy.prototype.getById = function(id) {
 // add a user to the database
 ServiceProxy.prototype.save = function(data) {
     return new Promise(function (resolve, reject) {
-        let sql = "INSERT INTO employee(username, first, last, email, department_id) VALUES(?, ?, ?, ?, ?)";
-        db.query(sql, [data.username, data.first, data.last, data.email, data.department.id], function(error, result){
-            try {
-                if(error) {
-                    reject({status: 500, result: error});
-                } else {
-                    data.id = result.insertId;
-                    resolve({status: 201, result: data});
+        try {
+            let sql = "INSERT INTO employee(username, first, last, email, department_id) VALUES(?, ?, ?, ?, ?)";
+            db.query(sql, [data.username, data.first, data.last, data.email, data.department.id], function(error, result){
+                try {
+                    if(error) {
+                        reject({status: 500, result: error});
+                    } else {
+                        data.id = result.insertId;
+                        resolve({status: 201, result: data});
+                    }
+                } catch(err) {
+                    reject({status: 500, result: err});
                 }
-            } catch(err) {
-                reject({status: 500, result: err});
-            }
-        });
+            });
+        } catch (err) {
+            reject({status: 500, result: err});
+        }
     });
 };
 
 // update a user in the database
 ServiceProxy.prototype.updateById = function(id, data) {
     return new Promise(function (resolve, reject) {
-        let sql = "UPDATE employee SET first = ?, last = ?, email = ?, department_id = ? WHERE id = ?";
-        db.query(sql, [data.first, data.last, data.email, data.department.id, id], function(error, result){
-            try {
-                if(error) {
-                    reject({status: 500, result: error});
-                } else {
-                    data.id = id;
-                    result.affectedRows == 1 ? resolve({status: 200, result: data}) : reject({status: 404, result: {code: 404, message: "Resource not found"}});
+        try {
+            let sql = "UPDATE employee SET first = ?, last = ?, email = ?, department_id = ? WHERE id = ?";
+            db.query(sql, [data.first, data.last, data.email, data.department.id, id], function(error, result){
+                try {
+                    if(error) {
+                        reject({status: 500, result: error});
+                    } else {
+                        data.id = id;
+                        result.affectedRows == 1 ? resolve({status: 200, result: data}) : reject({status: 404, result: {code: 404, message: "Resource not found"}});
+                    }
+                } catch(err) {
+                    reject({status: 500, result: err});
                 }
-            } catch(err) {
-                reject({status: 500, result: err});
-            }
-        });
+            });
+        } catch(err) {
+            reject({status: 500, result: err});
+        }
     });
 };
 

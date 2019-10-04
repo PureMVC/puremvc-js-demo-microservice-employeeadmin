@@ -48,16 +48,16 @@ DROP TABLE IF EXISTS `employee`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `employee` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) DEFAULT NULL,
-  `first` varchar(45) DEFAULT NULL,
-  `last` varchar(45) DEFAULT NULL,
-  `email` varchar(45) DEFAULT NULL,
+  `username` varchar(45) NOT NULL,
+  `first` varchar(45) NOT NULL,
+  `last` varchar(45) NOT NULL,
+  `email` varchar(45) NOT NULL,
   `department_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_username` (`username`),
   KEY `fk_department_idx` (`department_id`),
   CONSTRAINT `fk_employee_department_id` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,4 +130,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-04  3:15:55
+-- Dump completed on 2019-10-04 12:45:31

@@ -31,7 +31,7 @@ Service.prototype.createServer = function() {
                 switch (request.headers["content-type"]) {
                     case "application/json":
                     case "application/json; charset=utf-8":
-                        self.delegate.service(request, response, buffers.length ? JSON.parse(Buffer.concat(buffers).toString()) : {});
+                        self.delegate.service(request, response, JSON.parse(Buffer.concat(buffers).toString()));
                         break;
 
                     case "application/x-www-form-urlencoded": // urlencoded/binary
