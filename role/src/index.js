@@ -26,7 +26,8 @@ if (!process.env.DEV && cluster.isMaster) {
 
     let env = {
         "CONSUL_HOST": process.env.CONSUL_HOST,
-        "CONSUL_PORT": process.env.CONSUL_PORT
+        "CONSUL_PORT": process.env.CONSUL_PORT,
+        "CONSUL_ID": process.env.CONSUL_ID
     };
 
     for (let key in env) {
@@ -35,10 +36,10 @@ if (!process.env.DEV && cluster.isMaster) {
 
     let consul = require("consul")({host: env.CONSUL_HOST, port: env.CONSUL_PORT});
     consul.agent.check.register({
-        id: "department",
-        name: require('os').hostname(),
+        id: env.CONSUL_ID,
+        name: require("os").hostname(),
         ttl: "15s",
-        http: "http://" + require('os').hostname() + ":3000/health",
+        http: "http://" + require("os").hostname() + ":3000/health",
         check: "http",
         interval: "15s"
     }, function (error) {
@@ -46,6 +47,17 @@ if (!process.env.DEV && cluster.isMaster) {
             throw error;
         } else {
             console.log("Registered with Consul.");
+
+            // exit close, SIGINT - SIGHUP ctrl+c, SIGTERM kill pid (nodemon restart)
+            ["exit", "SIGINT", "SIGHUP", "SIGTERM", "SIGQUIT", "SIGUSR1", "SIGUSR2", "uncaughtException"].forEach(function(value){
+                process.on(value, function(){
+                    consul.agent.check.deregister(env.CONSUL_ID, function(error) {
+                        if (error) throw error;
+                        console.log("DeRegistered with Consul.");
+                        process.exit(1);
+                    });
+                })
+            });
         }
     });
 

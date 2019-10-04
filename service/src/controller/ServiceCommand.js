@@ -27,11 +27,11 @@ ServiceCommand.prototype.execute = function(notification) {
             case "/employees":
                 if(request.method == "GET") {
                     serviceProxy.getAgent("employee")
-                        .then(serviceProxy.findAllUsers)
+                        .then(serviceProxy.findAllUsers.bind(serviceProxy))
                         .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                 } else if(request.method == "POST") {
                     serviceProxy.getAgent("employee")
-                        .then(serviceProxy.saveUser.bind(this, serviceRequest.requestData))
+                        .then(serviceProxy.saveUser.bind(serviceProxy, serviceRequest.requestData))
                         .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                 } else {
                     this.fault(serviceRequest, {status: 405, result: {code: 405, message: "Method Not Allowed"}});
@@ -41,7 +41,7 @@ ServiceCommand.prototype.execute = function(notification) {
             case "/departments":
                 if(request.method == "GET") {
                     serviceProxy.getAgent("department")
-                        .then(serviceProxy.findAllDepartments)
+                        .then(serviceProxy.findAllDepartments.bind(serviceProxy))
                         .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                 } else {
                     this.fault(serviceRequest, {status: 405, result: {code: 405, message: "Method Not Allowed"}});
@@ -54,11 +54,11 @@ ServiceCommand.prototype.execute = function(notification) {
 
                     if(request.method == "GET") {
                         serviceProxy.getAgent("role")
-                            .then(serviceProxy.getUserRolesById.bind(this, parseInt(matches[1]))) // getUserRolesById(parseInt(matches[1]))
+                            .then(serviceProxy.getUserRolesById.bind(serviceProxy, parseInt(matches[1]))) // getUserRolesById(parseInt(matches[1]))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else if(request.method == "PUT") {
                         serviceProxy.getAgent("role")
-                            .then(serviceProxy.updateUserRolesById.bind(this, parseInt(matches[1]), serviceRequest.requestData))
+                            .then(serviceProxy.updateUserRolesById.bind(serviceProxy, parseInt(matches[1]), serviceRequest.requestData))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else {
                         this.fault(serviceRequest, {status: 405, result: {code: 405, message: "Method Not Allowed"}});
@@ -68,15 +68,15 @@ ServiceCommand.prototype.execute = function(notification) {
 
                     if(request.method == "GET") {
                         serviceProxy.getAgent("employee")
-                            .then(serviceProxy.getUserById.bind(this, parseInt(matches[1])))
+                            .then(serviceProxy.getUserById.bind(serviceProxy, parseInt(matches[1])))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else if(request.method == "PUT") {
                         serviceProxy.getAgent("employee")
-                            .then(serviceProxy.updateUser.bind(this, parseInt(matches[1]), serviceRequest.requestData))
+                            .then(serviceProxy.updateUser.bind(serviceProxy, parseInt(matches[1]), serviceRequest.requestData))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else if(request.method == "DELETE") {
                         serviceProxy.getAgent("employee")
-                            .then(serviceProxy.deleteUser.bind(this, parseInt(matches[1])))
+                            .then(serviceProxy.deleteUser.bind(serviceProxy, parseInt(matches[1])))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else {
                         this.fault(serviceRequest, {status: 405, result: {code: 405, message: "Method Not Allowed"}});

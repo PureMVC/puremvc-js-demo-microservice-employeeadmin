@@ -40,7 +40,6 @@ if (!process.env.DEV && cluster.isMaster) {
         name: require("os").hostname(),
         ttl: "15s",
         http: "http://" + require("os").hostname() + ":3000/health",
-        notes: "notes",
         check: "http",
         interval: "15s"
     }, function (error) {
