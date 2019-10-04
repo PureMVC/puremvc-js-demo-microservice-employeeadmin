@@ -17,5 +17,8 @@
     "url": "https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin"
   },
   "author": "Saad Shams",
-  "license": "CC-BY-3.0"
+  "license": "CC-BY-3.0",
+  "devDependencies": {
+    "mocha": "^6.2.1"
+  }
 }

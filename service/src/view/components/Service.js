@@ -17,8 +17,12 @@ Service.prototype.createServer = function() {
         response.setHeader("Access-Control-Allow-Headers", "Origin, Content-Type, Accept");
         response.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
 
-        if(request.method == "OPTIONS") {
-            self.result(request, response, {code: 200});
+        if(request.method == "GET" || request.method == "DELETE") {
+            if(require('url').parse(request.url).pathname == "/health") {
+                response.end();
+            } else {
+                self.delegate.service(request, response);
+            }
         } else if(request.method == "POST" || request.method == "PUT") {
 
             let buffers = [];
@@ -42,13 +46,13 @@ Service.prototype.createServer = function() {
                         break;
 
                     default:
-                        self.fault(request, response, {code: 400, message: "Missing or unsupported content-type header"});
+                        self.fault(request, response, 400, {code: 400, message: "Missing or unsupported content-type header"});
                 }
             });
-        } else if(request.method == "GET" || request.method == "DELETE") {
-            self.delegate.service(request, response);
+        } else if(request.method == "OPTIONS") {
+            self.result(request, response, 200);
         } else {
-            self.fault(request, response, {code:405, message: "Method Not Allowed"});
+            self.fault(request, response, 405, {code:405, message: "Method Not Allowed"});
         }
     }).listen(process.env.NODE_PORT || 3000, function(error){
         console.log(error ? error : "Server running at PORT:" + (process.env.NODE_PORT || 3000));
@@ -60,10 +64,8 @@ Service.prototype.result = function(request, response, status, data) {
         response.writeHead(status || 200);
         response.end();
     } else {
-        if(data.headers) {
-            Object.keys(data.headers).forEach(function(key){
-                response.setHeader(key, data.headers[key]);
-            });
+        if(request.method == "POST") {
+            response.setHeader("Location", require('url').parse(request.url).pathname + "/" + data.id);
         }
         response.writeHead(status || 200, {"Content-Type": "application/json"});
         response.end(JSON.stringify(data));
@@ -75,11 +77,6 @@ Service.prototype.fault = function(request, response, status, error) {
         response.writeHead(status, {"Content-Type": "application/json"});
         response.end(JSON.stringify({code: status || 500, message: "Internal Server Error"}));
     } else {
-        if(error.headers) {
-            Object.keys(error.headers).forEach(function(key){
-                response.setHeader(key, error.headers[key]);
-            });
-        }
         response.writeHead(status || 500, {"Content-Type": "application/json"});
         response.end(JSON.stringify({code: error.code, message: error.message, stack: error.stack}));
     }
