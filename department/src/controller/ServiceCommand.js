@@ -33,6 +33,10 @@ ServiceCommand.prototype.execute = function(notification) {
                 }
                 break;
 
+            case "/health":
+                this.result(serviceRequest, {status: 200});
+                break;
+
             default:
                 this.fault(serviceRequest, {status: 405, result: {code: 405, message: "Method Not Allowed"}});
 

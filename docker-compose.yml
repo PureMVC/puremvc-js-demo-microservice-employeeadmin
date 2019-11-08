@@ -3,7 +3,7 @@ version: '3'
 services:
 
   consul:
-    image: consul:1.6
+    image: consul:1.6.1
     container_name: consul
     ports:
       - 8300:8300
@@ -11,20 +11,12 @@ services:
       - 8500:8500
 
   service:
-    image: node:10
-    container_name: service
-    restart: on-failure
-    working_dir: /service
-    command: bash -c "npm install && npm install nodemon -g && nodemon --exec npm start"
+    container_name: nginx
+    build:
+      context: service
+      dockerfile: Dockerfile
     ports:
-      - 3000:3000
-      - 9229:9229
-    volumes:
-      - "./service:/service"
-    environment:
-      NODE_PORT: 3000
-      CONSUL_HOST: consul
-      CONSUL_PORT: 8500
+      - 8080:80
     depends_on:
       - consul
       - employee
@@ -32,75 +24,44 @@ services:
       - department
 
   employee:
-    image: node:10
     container_name: employee
+    build:
+      context: employee
+      dockerfile: Dockerfile
     restart: on-failure
-    working_dir: /service
-    command: bash -c "npm install && npm install nodemon -g && nodemon --exec npm start"
-    ports:
-      - 3001:3000
-      - 9230:9229
-    volumes:
-      - "./employee:/service"
+    env_file: .env
     environment:
-      NODE_PORT: 3000
-      DATABASE_HOST: database
-      DATABASE_PORT: 3306
-      DATABASE_NAME: employeeadmin
-      DATABASE_USER: mysql
-      DATABASE_PASSWORD: password
-      CONSUL_HOST: consul
-      CONSUL_PORT: 8500
       CONSUL_ID: employee
     depends_on:
       - consul
       - database
 
   role:
-    image: node:10
     container_name: role
+    build:
+      context: role
+      dockerfile: Dockerfile
     restart: on-failure
-    working_dir: /service
-    command: bash -c "npm install && npm install nodemon -g && nodemon --exec npm start"
     ports:
       - 3002:3000
       - 9231:9229
     volumes:
       - "./role:/service"
+    env_file: .env
     environment:
-      NODE_PORT: 3000
-      DATABASE_HOST: database
-      DATABASE_PORT: 3306
-      DATABASE_NAME: employeeadmin
-      DATABASE_USER: mysql
-      DATABASE_PASSWORD: password
-      CONSUL_HOST: consul
-      CONSUL_PORT: 8500
       CONSUL_ID: role
     depends_on:
       - consul
       - database
 
   department:
-    image: node:10
     container_name: department
+    build:
+      context: department
+      dockerfile: Dockerfile
     restart: on-failure
-    working_dir: /service
-    command: bash -c "npm install && npm install nodemon -g && nodemon --exec npm start"
-    ports:
-      - 3003:3000
-      - 9232:9229
-    volumes:
-      - "./department:/service"
+    env_file: .env
     environment:
-      NODE_PORT: 3000
-      DATABASE_HOST: database
-      DATABASE_PORT: 3306
-      DATABASE_NAME: employeeadmin
-      DATABASE_USER: mysql
-      DATABASE_PASSWORD: password
-      CONSUL_HOST: consul
-      CONSUL_PORT: 8500
       CONSUL_ID: department
     depends_on:
       - consul

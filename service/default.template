@@ -1,0 +1,33 @@
+upstream employee {
+    least_conn;
+    keepalive 32;
+    server employee:80;
+}
+
+upstream role {
+    least_conn;
+    keepalive 32;
+    server role:80;
+}
+
+upstream department {
+    least_conn;
+    keepalive 32;
+    server department:80;
+}
+
+server {
+
+    location /employees {
+        proxy_pass http://employee;
+    }
+
+    location ~ ^/employees/[0-9]+/roles {
+        proxy_pass http://role;
+    }
+
+    location /departments {
+        proxy_pass http://department;
+    }
+
+}

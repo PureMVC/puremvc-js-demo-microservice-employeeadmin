@@ -24,6 +24,10 @@ ServiceCommand.prototype.execute = function(notification) {
 
         switch(require('url').parse(request.url).pathname) {
 
+            case "/health":
+                this.result(serviceRequest, {status: 200});
+                break;
+
             default:
                 var matches;
                 if(matches = request.url.match(/\/employees\/(\d+)\/roles/)) { // employees/:id/roles

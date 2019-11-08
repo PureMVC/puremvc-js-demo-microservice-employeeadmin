@@ -18,11 +18,7 @@ Service.prototype.createServer = function() {
         response.setHeader("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
 
         if(request.method == "GET" || request.method == "DELETE") {
-            if(require('url').parse(request.url).pathname == "/health") {
-                response.end();
-            } else {
-                self.delegate.service(request, response);
-            }
+            self.delegate.service(request, response);
         } else if(request.method == "POST" || request.method == "PUT") {
             let buffers = [];
             request.on("data", buffers.push.bind(buffers));
@@ -53,8 +49,8 @@ Service.prototype.createServer = function() {
         } else {
             self.fault(request, response, 405, {code:405, message: "Method Not Allowed"});
         }
-    }).listen(process.env.NODE_PORT || 3000, function(error){
-        console.log(error ? error : "Server running at PORT:" + (process.env.NODE_PORT || 3000));
+    }).listen(process.env.NODE_PORT || 80, function(error){
+        console.log(error ? error : "Server running at PORT:" + (process.env.NODE_PORT || 80));
     });
 };
 
