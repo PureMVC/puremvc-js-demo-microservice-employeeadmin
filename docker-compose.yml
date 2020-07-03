@@ -45,8 +45,6 @@ services:
     ports:
       - 3002:3000
       - 9231:9229
-    volumes:
-      - "./role:/service"
     env_file: .env
     environment:
       CONSUL_ID: role
