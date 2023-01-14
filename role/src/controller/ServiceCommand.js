@@ -22,10 +22,17 @@ ServiceCommand.prototype.execute = function(notification) {
         let request = notification.body.request;
         let serviceProxy = this.facade.retrieveProxy(service.model.ServiceProxy.NAME);
 
+        console.log(require('url').parse(request.url).pathname);
+
         switch(require('url').parse(request.url).pathname) {
 
             case "/health":
                 this.result(serviceRequest, {status: 200});
+                break;
+
+            case "/roles":
+                serviceProxy.findAll()
+                    .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                 break;
 
             default:
@@ -33,10 +40,10 @@ ServiceCommand.prototype.execute = function(notification) {
                 if(matches = request.url.match(/\/employees\/(\d+)\/roles/)) { // employees/:id/roles
 
                     if(request.method == "GET") {
-                        serviceProxy.getUserRolesById(parseInt(matches[1]))
+                        serviceProxy.findByUserId(parseInt(matches[1]))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else if(request.method == "PUT") {
-                        serviceProxy.updateUserRolesById(parseInt(matches[1]), serviceRequest.requestData)
+                        serviceProxy.updateByUserId(parseInt(matches[1]), serviceRequest.requestData)
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else {
                         this.fault(serviceRequest, {status: 405, result: {code:405, message: "Method Not Allowed"}});
@@ -45,7 +52,6 @@ ServiceCommand.prototype.execute = function(notification) {
                 } else {
                     this.fault(serviceRequest, {status: 405, result: {code: 405, message: "Method Not Allowed"}});
                 }
-
         }
     } catch(error) {
         this.fault(notification.body, {status: 500, result: error});

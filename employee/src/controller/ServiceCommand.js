@@ -24,10 +24,10 @@ ServiceCommand.prototype.execute = function(notification) {
 
         switch(require('url').parse(request.url).pathname) {
             case "/employees":
-                if(request.method == "GET") {
+                if(request.method === "GET") {
                     serviceProxy.findAll()
                         .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
-                } else if(request.method == "POST") {
+                } else if(request.method === "POST") {
                     serviceProxy.save(serviceRequest.requestData)
                         .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                 } else {
@@ -40,15 +40,15 @@ ServiceCommand.prototype.execute = function(notification) {
                 break;
 
             default:
-                var matches;
-                if(matches = request.url.match(/\/employees\/(\d+)/)) { // employees/:id
-                    if(request.method == "GET") {
+                var matches = request.url.match(/\/employees\/(\d+)/);
+                if(matches) { // employees/:id
+                    if(request.method === "GET") {
                         serviceProxy.getById(parseInt(matches[1]))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
-                    } else if(request.method == "PUT") {
+                    } else if(request.method === "PUT") {
                         serviceProxy.updateById(parseInt(matches[1]), serviceRequest.requestData)
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
-                    } else if(request.method == "DELETE") {
+                    } else if(request.method === "DELETE") {
                         serviceProxy.deleteById(parseInt(matches[1]))
                             .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                     } else {

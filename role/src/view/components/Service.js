@@ -69,10 +69,10 @@ Service.prototype.result = function(request, response, status, data) {
 
 Service.prototype.fault = function(request, response, status, error) {
     if(error == null) {
-        response.writeHead(status, {"Content-Type": "application/json"});
+        response.writeHead(status, {"Content-Type": "application/json", "HOST": process.env.CONSUL_ID || require("os").hostname()});
         response.end(JSON.stringify({code: status || 500, message: "Internal Server Error"}));
     } else {
-        response.writeHead(status || 500, {"Content-Type": "application/json"});
+        response.writeHead(status, {"Content-Type": "application/json", "HOST": process.env.CONSUL_ID || require("os").hostname()});
         response.end(JSON.stringify({code: error.code, message: error.message, stack: error.stack}));
     }
 };

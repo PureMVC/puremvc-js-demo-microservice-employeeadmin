@@ -42,9 +42,6 @@ services:
       context: role
       dockerfile: Dockerfile
     restart: on-failure
-    ports:
-      - 3002:3000
-      - 9231:9229
     env_file: .env
     environment:
       CONSUL_ID: role

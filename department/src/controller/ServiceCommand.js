@@ -25,7 +25,7 @@ ServiceCommand.prototype.execute = function(notification) {
         switch(require('url').parse(request.url).pathname) {
 
             case "/departments":
-                if(request.method == "GET") {
+                if(request.method === "GET") {
                     serviceProxy.findAllDepartments()
                         .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
                 } else {

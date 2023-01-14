@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.16, for macos10.14 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.22, for macos10.15 (x86_64)
 --
 -- Host: 127.0.0.1    Database: employeeadmin
 -- ------------------------------------------------------
--- Server version	5.7.27
+-- Server version	5.7.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8 ;
+/*!50503 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -21,7 +21,7 @@
 
 DROP TABLE IF EXISTS `department`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `department` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -45,13 +45,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `employee`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
   `first` varchar(45) NOT NULL,
   `last` varchar(45) NOT NULL,
   `email` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
   `department_id` int(10) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_username` (`username`),
@@ -66,7 +67,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,'lstooge','Larry','Stooge','larry@stooges.com',1),(2,'cstooge','Curly','Stooge','curly@stooges.com',2),(3,'mstooge','Moe','Stooge','moe@stooges.com',3);
+INSERT INTO `employee` VALUES (1,'lstooge','Larry','Stooge','larry@stooges.com','ijk456',1),(2,'cstooge','Curly','Stooge','curly@stooges.com','xyz987',2),(3,'mstooge','Moe','Stooge','moe@stooges.com','abc123',3);
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -76,7 +77,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `employee_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `employee_role` (
   `employee_id` int(10) unsigned NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
@@ -93,7 +94,7 @@ CREATE TABLE `employee_role` (
 
 LOCK TABLES `employee_role` WRITE;
 /*!40000 ALTER TABLE `employee_role` DISABLE KEYS */;
-INSERT INTO `employee_role` VALUES (2,2),(2,3),(1,4),(2,5),(1,6),(3,7),(3,8),(3,9);
+INSERT INTO `employee_role` VALUES (2,2),(2,3),(1,4),(2,5),(3,7),(3,8),(3,9);
 /*!40000 ALTER TABLE `employee_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -103,7 +104,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
@@ -130,4 +131,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-04 12:45:31
+-- Dump completed on 2020-12-13  7:08:08

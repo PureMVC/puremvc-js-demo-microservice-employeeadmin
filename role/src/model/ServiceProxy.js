@@ -17,8 +17,21 @@ function ServiceProxy($db) {
 ServiceProxy.prototype = new puremvc.Proxy;
 ServiceProxy.prototype.constructor = ServiceProxy;
 
+ServiceProxy.prototype.findAll = function() {
+    return new Promise(function (resolve, reject) {
+        let sql = "SELECT id, name FROM role";
+        db.query(sql, function (error, result) {
+            if(error) {
+                reject({status: 500, result: error});
+            } else {
+                resolve({status: 200, result: result});
+            }
+        });
+    });
+}
+
 // get roles for a user
-ServiceProxy.prototype.getUserRolesById = function(id) {
+ServiceProxy.prototype.findByUserId = function(id) {
     return new Promise(function (resolve, reject) {
         let sql = "\
                 SELECT * FROM employee WHERE id = ?; \
@@ -36,7 +49,7 @@ ServiceProxy.prototype.getUserRolesById = function(id) {
 };
 
 // update roles for a user
-ServiceProxy.prototype.updateUserRolesById = function(id, roleIds) {
+ServiceProxy.prototype.updateByUserId = function(id, roleIds) {
     return new Promise(function (resolve, reject) {
         let sql = "\
                 START TRANSACTION; \
@@ -52,7 +65,7 @@ ServiceProxy.prototype.updateUserRolesById = function(id, roleIds) {
                     if(error) {
                         reject({status: 500, result: error});
                     } else {
-                        resolve({status: 200, result: {id: id, roles: roleIds}});
+                        resolve({status: 200, result: roleIds});
                     }
                 } catch (err) {
                     reject({status: 500, result: err});

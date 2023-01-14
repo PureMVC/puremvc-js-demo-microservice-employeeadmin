@@ -95,7 +95,7 @@ StartupCommand.prototype.consul = function(env) {
                 path: "/v1/agent/service/register",
                 headers: {"content-type": "application-json; charset=utf-8"}
             }, function(response){
-                if(response.statusCode == 200) {
+                if(response.statusCode === 200) {
                     ["exit", "SIGINT", "SIGHUP", "SIGTERM", "SIGQUIT", "SIGUSR1", "SIGUSR2"].forEach(function(value){
                         process.on(value, function(){ // exit close, SIGINT - SIGHUP ctrl+c, SIGTERM kill pid (nodemon restart)
                             http.request({

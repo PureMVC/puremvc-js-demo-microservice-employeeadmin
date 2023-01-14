@@ -1,0 +1,14 @@
+npm install
+
+Run/Debug Configuration
+
+IDE: dir/src/index.js
+
+employee
+DATABASE_HOST=localhost;DATABASE_PORT=6603;MYSQL_DATABASE=employeeadmin;MYSQL_USER=mysql;MYSQL_PASSWORD=password;CONSUL_HOST=localhost;CONSUL_PORT=8500;CONSUL_ID=employee;NODE_PORT=3000
+
+Department
+DATABASE_HOST=localhost;DATABASE_PORT=6603;MYSQL_DATABASE=employeeadmin;MYSQL_USER=mysql;MYSQL_PASSWORD=password;CONSUL_HOST=localhost;CONSUL_PORT=8500;CONSUL_ID=department;NODE_PORT=3001
+
+Role
+DATABASE_HOST=localhost;DATABASE_PORT=6603;MYSQL_DATABASE=employeeadmin;MYSQL_USER=mysql;MYSQL_PASSWORD=password;CONSUL_HOST=localhost;CONSUL_PORT=8500;CONSUL_ID=role;NODE_PORT=3002

@@ -25,18 +25,19 @@ ServiceProxy.prototype.constructor = ServiceProxy;
 
 // find all users
 ServiceProxy.prototype.findAll = function() {
+    console.log("find All")
     return new Promise(function(resolve, reject){
         let sql = '\
                 SELECT \
-                  employee.id, employee.username, employee.first, employee.last, employee.email, \
+                  employee.id, employee.first, employee.last, \
                   GROUP_CONCAT(role.id) AS "role.ids",\
                   GROUP_CONCAT(role.name) AS "role.names",\
                   department.id AS "department.id", \
                   department.name AS "department.name" \
                 FROM employee\
-                INNER JOIN department ON employee.department_id = department.id \
-                INNER JOIN employee_role ON employee.id = employee_role.employee_id\
-                INNER JOIN role ON employee_role.role_id = role.id\
+                LEFT JOIN department ON employee.department_id = department.id \
+                LEFT JOIN employee_role ON employee.id = employee_role.employee_id\
+                LEFT JOIN role ON employee_role.role_id = role.id\
                 GROUP BY employee.id\
                 ORDER BY employee.id';
         db.query(sql, function(error, result){
@@ -44,7 +45,7 @@ ServiceProxy.prototype.findAll = function() {
                 if(error) {
                     reject({status: 500, result: {code: 500, message: error.sqlMessage}});
                 } else {
-                    if(result.length == 0) {
+                    if(result.length === 0) {
                         reject({status: 404, result: {code: 404, message: "Resource not found"}});
                     } else {
                         let data = [];
@@ -55,7 +56,7 @@ ServiceProxy.prototype.findAll = function() {
                                 first: item.first,
                                 last: item.last,
                                 email: item.email,
-                                roles: Array.zip(item["role.ids"].split(","), item["role.names"].split(",")),
+                                roles: Array.zip(item["role.ids"] ? item["role.ids"].split(",") : [], item["role.names"] ? item["role.names"].split(",") : []),
                                 department: {
                                     id: item["department.id"],
                                     name: item["department.name"]
@@ -77,15 +78,15 @@ ServiceProxy.prototype.getById = function(id) {
     return new Promise(function (resolve, reject) {
         let sql = '\
             SELECT \
-              employee.id, employee.username, employee.first, employee.last, employee.email, \
+              employee.id, employee.username, employee.first, employee.last, employee.email, employee.password, \
               GROUP_CONCAT(role.id) AS "role.ids", \
               GROUP_CONCAT(role.name) AS "role.names", \
               department.id AS "department.id", \
               department.name AS "department.name" \
             FROM employee \
-            INNER JOIN department ON employee.department_id = department.id \
-            INNER JOIN employee_role ON employee.id = employee_role.employee_id \
-            INNER JOIN role ON employee_role.role_id = role.id \
+            LEFT JOIN department ON employee.department_id = department.id \
+            LEFT JOIN employee_role ON employee.id = employee_role.employee_id \
+            LEFT JOIN role ON employee_role.role_id = role.id \
             WHERE employee.id = ? \
             GROUP BY employee.id';
 
@@ -94,7 +95,7 @@ ServiceProxy.prototype.getById = function(id) {
                 if(error) {
                     reject({status: 500, result: error});
                 } else {
-                    if(result.length == 0) {
+                    if(result.length === 0) {
                         reject({status: 404, result: {code: 404, message: "Resource not found"}});
                     } else {
                         let data = {};
@@ -105,7 +106,8 @@ ServiceProxy.prototype.getById = function(id) {
                                 first: item.first,
                                 last: item.last,
                                 email: item.email,
-                                roles: Array.zip(item["role.ids"].split(","), item["role.names"].split(",")),
+                                password: item.password,
+                                roles: Array.zip(item["role.ids"] ? item["role.ids"].split(",") : [], item["role.names"] ? item["role.names"].split(",") : []),
                                 department: {
                                     id: item["department.id"],
                                     name: item["department.name"]
@@ -126,8 +128,8 @@ ServiceProxy.prototype.getById = function(id) {
 ServiceProxy.prototype.save = function(data) {
     return new Promise(function (resolve, reject) {
         try {
-            let sql = "INSERT INTO employee(username, first, last, email, department_id) VALUES(?, ?, ?, ?, ?)";
-            db.query(sql, [data.username, data.first, data.last, data.email, data.department.id], function(error, result){
+            let sql = "INSERT INTO employee(username, first, last, email, password, department_id) VALUES(?, ?, ?, ?, ?, ?)";
+            db.query(sql, [data.username, data.first, data.last, data.email, data.password, data.department.id], function(error, result){
                 try {
                     if(error) {
                         reject({status: 500, result: error});
@@ -149,14 +151,14 @@ ServiceProxy.prototype.save = function(data) {
 ServiceProxy.prototype.updateById = function(id, data) {
     return new Promise(function (resolve, reject) {
         try {
-            let sql = "UPDATE employee SET first = ?, last = ?, email = ?, department_id = ? WHERE id = ?";
-            db.query(sql, [data.first, data.last, data.email, data.department.id, id], function(error, result){
+            let sql = "UPDATE employee SET first = ?, last = ?, email = ?, password = ?, department_id = ? WHERE id = ?";
+            db.query(sql, [data.first, data.last, data.email, data.password, data.department.id, id], function(error, result){
                 try {
                     if(error) {
                         reject({status: 500, result: error});
                     } else {
                         data.id = id;
-                        result.affectedRows == 1 ? resolve({status: 200, result: data}) : reject({status: 404, result: {code: 404, message: "Resource not found"}});
+                        result.affectedRows === 1 ? resolve({status: 200, result: data}) : reject({status: 404, result: {code: 404, message: "Resource not found"}});
                     }
                 } catch(err) {
                     reject({status: 500, result: err});
@@ -177,7 +179,7 @@ ServiceProxy.prototype.deleteById = function(id) {
                 if(error) {
                     reject({status: 500, result: error});
                 } else {
-                    result.affectedRows == 1 ? resolve({status: 204, result: null}) : reject({status: 404, result: {code: 404, message: "Resource not found"}});
+                    result.affectedRows === 1 ? resolve({status: 204, result: null}) : reject({status: 404, result: {code: 404, message: "Resource not found"}});
                 }
             } catch(err) {
                 reject({status: 500, result: err});
