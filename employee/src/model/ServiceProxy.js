@@ -56,7 +56,7 @@ ServiceProxy.prototype.findAll = function() {
                                 first: item.first,
                                 last: item.last,
                                 email: item.email,
-                                roles: Array.zip(item["role.ids"] ? item["role.ids"].split(",") : [], item["role.names"] ? item["role.names"].split(",") : []),
+                                roles: Array.zip(item["role.ids"] ? item["role.ids"].split(",").map(function (id){return parseInt(id) }) : [], item["role.names"] ? item["role.names"].split(",") : []),
                                 department: {
                                     id: item["department.id"],
                                     name: item["department.name"]
@@ -107,7 +107,7 @@ ServiceProxy.prototype.getById = function(id) {
                                 last: item.last,
                                 email: item.email,
                                 password: item.password,
-                                roles: Array.zip(item["role.ids"] ? item["role.ids"].split(",") : [], item["role.names"] ? item["role.names"].split(",") : []),
+                                roles: Array.zip(item["role.ids"] ? item["role.ids"].split(",").map(function (id){return parseInt(id)}) : [], item["role.names"] ? item["role.names"].split(",") : []),
                                 department: {
                                     id: item["department.id"],
                                     name: item["department.name"]
