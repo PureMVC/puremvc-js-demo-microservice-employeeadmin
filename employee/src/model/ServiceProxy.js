@@ -25,7 +25,6 @@ ServiceProxy.prototype.constructor = ServiceProxy;
 
 // find all users
 ServiceProxy.prototype.findAll = function() {
-    console.log("find All")
     return new Promise(function(resolve, reject){
         let sql = '\
                 SELECT \
