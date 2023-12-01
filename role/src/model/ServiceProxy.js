@@ -41,7 +41,7 @@ ServiceProxy.prototype.findByUserId = function(id) {
             if(error) {
                 reject({status: 500, result: error});
             } else {
-                result[0].length != 0 ? resolve({status: 200, result: result[1]}) :
+                result[0].length !== 0 ? resolve({status: 200, result: result[1]}) :
                     reject({status: 400, result: {code: 400, message: "Invalid id"}});
             }
         });
@@ -51,16 +51,22 @@ ServiceProxy.prototype.findByUserId = function(id) {
 // update roles for a user
 ServiceProxy.prototype.updateByUserId = function(id, roleIds) {
     return new Promise(function (resolve, reject) {
-        let sql = "\
-                START TRANSACTION; \
+        let sql = "";
+        if (roleIds.length !== 0) {
+            sql = "START TRANSACTION; \
                 DELETE FROM employee_role WHERE employee_id = ?; \
                 INSERT INTO employee_role(employee_id, role_id) VALUES ?; \
                 COMMIT;";
+        } else {
+            sql = "DELETE FROM employee_role WHERE employee_id = ?;"
+        }
+
         try {
             let values = roleIds.map(function(role_id){
                 return [id, role_id];
             });
-            db.query(sql, [id, values], function(error) {
+
+            db.query(sql, roleIds.length !== 0 ? [id, values] : id, function(error) {
                 try {
                     if(error) {
                         reject({status: 500, result: error});

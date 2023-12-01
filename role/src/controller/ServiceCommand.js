@@ -22,8 +22,6 @@ ServiceCommand.prototype.execute = function(notification) {
         let request = notification.body.request;
         let serviceProxy = this.facade.retrieveProxy(service.model.ServiceProxy.NAME);
 
-        console.log(require('url').parse(request.url).pathname);
-
         switch(require('url').parse(request.url).pathname) {
 
             case "/health":
