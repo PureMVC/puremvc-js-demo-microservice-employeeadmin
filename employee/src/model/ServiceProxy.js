@@ -26,44 +26,22 @@ ServiceProxy.prototype.constructor = ServiceProxy;
 // find all users
 ServiceProxy.prototype.findAll = function() {
     return new Promise(function(resolve, reject){
-        let sql = '\
-                SELECT \
-                  employee.id, employee.first, employee.last, \
-                  GROUP_CONCAT(role.id) AS "role.ids",\
-                  GROUP_CONCAT(role.name) AS "role.names",\
-                  department.id AS "department.id", \
-                  department.name AS "department.name" \
-                FROM employee\
-                LEFT JOIN department ON employee.department_id = department.id \
-                LEFT JOIN employee_role ON employee.id = employee_role.employee_id\
-                LEFT JOIN role ON employee_role.role_id = role.id\
-                GROUP BY employee.id\
-                ORDER BY employee.id';
+        let sql = "SELECT id, first, last FROM employee";
+
         db.query(sql, function(error, result){
             try {
                 if(error) {
                     reject({status: 500, result: {code: 500, message: error.sqlMessage}});
                 } else {
-                    if(result.length === 0) {
-                        reject({status: 404, result: {code: 404, message: "Resource not found"}});
-                    } else {
-                        let data = [];
-                        result.map(function(item){
-                            data.push({
-                                id: item.id,
-                                username: item.username,
-                                first: item.first,
-                                last: item.last,
-                                email: item.email,
-                                roles: Array.zip(item["role.ids"] ? item["role.ids"].split(",").map(function (id){return parseInt(id) }) : [], item["role.names"] ? item["role.names"].split(",") : []),
-                                department: {
-                                    id: item["department.id"],
-                                    name: item["department.name"]
-                                }
-                            });
+                    let data = [];
+                    result.map(function(item){
+                        data.push({
+                            id: item.id,
+                            first: item.first,
+                            last: item.last
                         });
-                        resolve({status: 200, result: data});
-                    }
+                    });
+                    resolve({status: 200, result: data});
                 }
             } catch(err) {
                 reject({status: 500, result: err});
