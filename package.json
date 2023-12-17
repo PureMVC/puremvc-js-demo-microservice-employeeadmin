@@ -1,0 +1,21 @@
+{
+  "name": "employeeadmin",
+  "version": "1.0.0",
+  "dependencies": {
+    "mysql": "2.18.1"
+  },
+  "description": "PureMVC NodeJS EmployeeAdmin Microservice Demo",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "start:nodemon": "nodemon node src/index.js",
+    "test": "node --test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin"
+  },
+  "author": "Saad Shams",
+  "license": "BSD-3-Clause"
+}

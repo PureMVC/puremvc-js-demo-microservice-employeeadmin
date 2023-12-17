@@ -1,10 +1,12 @@
 PureMVC JavaScript Demo - NodeJS Employee Admin
 --------------------------------------------------------------------------
-Release Date: 10/17/19
+Release Date: 12/17/23
     Platform: NodeJS
-     Version: 1
+     Version: 2
        Major: 0
        Minor: 0
       Author: Saad Shams <saad.shams@puremvc.org>
 --------------------------------------------------------------------------
-1.0.0 - First public release.
+2.0.0 - ECMA JS based Demo
+
+1.0.0 - First public release. Classic JS based Demo

@@ -1,14 +1,12 @@
-npm install
+SSL Certificates
+openssl req -nodes -new -x509 -keyout server.key -out server.cert
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // allow nodejs to accept self-signed certificates
 
-Run/Debug Configuration
+WebStorm Run/Debug Configuration
+MySQL
+DATABASE_HOST=localhost;DATABASE_PORT=6603;MYSQL_DATABASE=employeeadmin;MYSQL_USER=mysql;MYSQL_PASSWORD=password;
 
-IDE: dir/src/index.js
-
-employee
-DATABASE_HOST=localhost;DATABASE_PORT=6603;MYSQL_DATABASE=employeeadmin;MYSQL_USER=mysql;MYSQL_PASSWORD=password;CONSUL_HOST=localhost;CONSUL_PORT=8500;CONSUL_ID=employee;NODE_PORT=3000
-
-Department
-DATABASE_HOST=localhost;DATABASE_PORT=6603;MYSQL_DATABASE=employeeadmin;MYSQL_USER=mysql;MYSQL_PASSWORD=password;CONSUL_HOST=localhost;CONSUL_PORT=8500;CONSUL_ID=department;NODE_PORT=3001
-
-Role
-DATABASE_HOST=localhost;DATABASE_PORT=6603;MYSQL_DATABASE=employeeadmin;MYSQL_USER=mysql;MYSQL_PASSWORD=password;CONSUL_HOST=localhost;CONSUL_PORT=8500;CONSUL_ID=role;NODE_PORT=3002
+Postman Configuration for Proxyman
+Proxy -> Enable "Use Custom Proxy Configuration"
+- Check HTTP and HTTPS checkboxes
+- Set IP = 127.0.0.1 at port 9090

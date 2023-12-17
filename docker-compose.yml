@@ -2,77 +2,43 @@ version: '3'
 
 services:
 
-  consul:
-    image: consul:1.6.1
-    container_name: consul
+  employeeadmin:
+    container_name: employeeadmin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: .env
+    restart: on-failure
+#    volumes:
+#      - ./:/service
     ports:
-      - 8300:8300
-      - 8400:8400
-      - 8500:8500
-
-  service:
-    container_name: nginx
-    build:
-      context: service
-      dockerfile: Dockerfile
-    ports:
-      - 8080:80
+      - "443:443"
     depends_on:
-      - consul
-      - employee
-      - role
-      - department
-
-  employee:
-    container_name: employee
-    build:
-      context: employee
-      dockerfile: Dockerfile
-    restart: on-failure
-    env_file: .env
-    environment:
-      CONSUL_ID: employee
-    depends_on:
-      - consul
-      - database
-
-  role:
-    container_name: role
-    build:
-      context: role
-      dockerfile: Dockerfile
-    restart: on-failure
-    env_file: .env
-    environment:
-      CONSUL_ID: role
-    depends_on:
-      - consul
-      - database
-
-  department:
-    container_name: department
-    build:
-      context: department
-      dockerfile: Dockerfile
-    restart: on-failure
-    env_file: .env
-    environment:
-      CONSUL_ID: department
-    depends_on:
-      - consul
       - database
 
   database:
+    container_name: mysql
     image: mysql:5.7
-    container_name: database
+    env_file: .env
     restart: on-failure
-    ports:
-      - 6603:3306
     volumes:
+      - mysql_data:/var/lib/mysql
       - ./assets/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "6603:3306"
     environment:
       DATABASE_HOST: mysql
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: employeeadmin
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:

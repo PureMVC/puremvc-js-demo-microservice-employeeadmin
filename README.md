@@ -1,11 +1,7 @@
 ## [PureMVC](http://puremvc.github.com/) [JavaScript](https://github.com/PureMVC/puremvc-js-multicore-framework/wiki) Demo: Employee Admin Microservice
 This demo illustrates techniques for performing routine server-side maintenance operations in a PureMVC-based Microservice application.
 
-## Screenshot
-![PureMVC JavaScript Demo: Employee Admin Microservice](http://puremvc.org/pages/images/screenshots/PureMVC-Shot-JS-REST-EmployeeAdmin.png) 
-
 ## Installation
-
 ```
 docker-compose up
 ```
@@ -15,16 +11,17 @@ docker-compose up
 * [NodeJS](https://en.wikipedia.org/wiki/Node.js)
 * [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
 * [Docker](https://en.wikipedia.org/wiki/Docker_(software))
-* [Nginx](https://en.wikipedia.org/wiki/Nginx)
-* [Consul](https://en.wikipedia.org/wiki/Consul_(software))
 * [MySQL](https://en.wikipedia.org/wiki/MySQL)
 
+#### Legacy Classic JS based Demo
+* [Demo: Employee Admin Microservice](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/tree/classic)
+
 ## Status
-Production - [Version 1.0](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/blob/master/VERSION)
+Production - [Version 2.0](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/blob/master/VERSION)
 
 ## License
-* PureMVC JavaScript Demo - Microservice Employee Admin - Copyright © 2019 [Saad Shams](https://www.linkedin.com/in/muizz)
-* PureMVC - Copyright © 2019 [Futurescale, Inc](http://futurescale.com) 
+* PureMVC JavaScript Demo - Microservice Employee Admin - Copyright © 2023 [Saad Shams](https://www.linkedin.com/in/muizz)
+* PureMVC - Copyright © 2023 [Futurescale, Inc](http://futurescale.com) 
 * All rights reserved.
 
 * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
