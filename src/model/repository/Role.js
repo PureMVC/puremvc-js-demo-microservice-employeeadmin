@@ -6,7 +6,6 @@
 //  Your reuse is governed by the Creative Commons Attribution 3.0 License
 //
 
-
 export class Role {
 
     constructor(mysql) {
@@ -18,16 +17,17 @@ export class Role {
             let sql = "SELECT id, name FROM role";
             let connection;
             this.mysql.getConnection()
-                .then(c => {
-                    connection = c;
+                .then(conn => {
+                    connection = conn;
                     return this.mysql.query(connection, sql, []);
                 })
                 .then(result => {
-                    connection.release();
                     resolve({code: 200, result: result});
                 }, error => {
-                    connection.release();
                     reject({code: 400, result: error});
+                })
+                .finally(() => {
+                    connection.release();
                 })
         });
     }

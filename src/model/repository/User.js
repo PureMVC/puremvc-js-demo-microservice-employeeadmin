@@ -6,7 +6,6 @@
 //  Your reuse is governed by the Creative Commons Attribution 3.0 License
 //
 
-
 export class User {
 
     constructor(mysql, role) {
@@ -19,17 +18,18 @@ export class User {
             let sql = "SELECT id, first, last FROM employee";
             let connection;
             this.mysql.getConnection()
-                .then(c => {
-                    connection = c;
+                .then(conn => {
+                    connection = conn;
                     return this.mysql.query(connection, sql, []);
                 })
                 .then(result => {
-                    connection.release();
                     resolve({code: 200, result: result});
                 }, error => {
-                    connection.release();
                     reject({code: 400, result: error});
-                });
+                })
+                .finally(() => {
+                    connection.release();
+                })
         });
     }
 
@@ -49,34 +49,37 @@ export class User {
             WHERE employee.id = ? \
             GROUP BY employee.id';
 
+            let connection;
             this.mysql.getConnection()
-                .then(connection => this.mysql.query(connection, sql, [id])
-                    .then(result => {
-                        connection.release();
-                        if (result.length) {
+                .then(conn => {
+                    connection = conn
+                    this.mysql.query(connection, sql, [id])
+                })
+                .then(result => {
+                    if (result.length === 0)
+                        return reject({code: 404, result: "Resource not found"})
 
-                            let data = {
-                                id: result[0].id, username: result[0].username,
-                                first: result[0].first, last: result[0].last,
-                                email: result[0].email, password: result[0].password,
-                                department: { id: result[0]["department.id"], name: result[0]["department.name"] }
-                            };
+                    let data = {
+                        id: result[0].id, username: result[0].username,
+                        first: result[0].first, last: result[0].last,
+                        email: result[0].email, password: result[0].password,
+                        department: { id: result[0]["department.id"], name: result[0]["department.name"] }
+                    };
 
-                            let ids = result[0]["role.ids"] ? result[0]["role.ids"].split(",").map(id => parseInt(id)) : [];
-                            let names = result[0]["role.names"] ? result[0]["role.names"].split(",") : [];
-                            data.roles = ids.map((item, index) => { // zip ids and names
-                                return {id: item, name: names[index]};
-                            });
+                    let ids = result[0]["role.ids"] ? result[0]["role.ids"].split(",").map(id => parseInt(id)) : [];
+                    let names = result[0]["role.names"] ? result[0]["role.names"].split(",") : [];
 
-                            resolve({code: 200, result: data});
-                        } else {
-                            reject({code: 404, result: "Resource not found"})
-                        }
-                    }, error => {
-                        connection.release();
-                        reject({code: 400, result: error});
-                    })
-                );
+                    data.roles = ids.map((item, index) => { // zip ids and names
+                        return {id: item, name: names[index]};
+                    });
+
+                    resolve({code: 200, result: data});
+                }, error => {
+                    reject({code: 400, result: error});
+                })
+                .finally(() => {
+                    connection.release();
+                });
         });
     }
 
@@ -85,8 +88,8 @@ export class User {
             let connection;
             this.mysql.getConnection()
                 .then(this.mysql.beginTransaction)
-                .then(c => {
-                    connection = c;
+                .then(conn => {
+                    connection = conn;
                     return user.id ? this.update(connection, user) : this.save(connection, user)
                 })
                 .then(result => this.role.deleteRolesById(connection, result))
@@ -94,19 +97,20 @@ export class User {
                 .then(result => {
                     return new Promise((resolve, reject) => {
                         this.mysql.commit(connection)
-                            .then(connection => resolve(result))
+                            .then(conn => resolve(result))
                             .catch(error => reject(error));
                     });
                 })
                 .then((result) => {
-                    connection.release();
                     resolve({code: user.id ? 200 : 201, result: result});
                 }, (error) => {
-                    connection.rollback(() => {
-                        connection.release();
+                    return connection.rollback(() => {
                         reject({code: 400, result: error});
                     });
                 })
+                .finally(() => {
+                    connection.release();
+                });
         });
     }
 
@@ -143,17 +147,21 @@ export class User {
     deleteById(id) {
         return new Promise((resolve, reject) => {
             let sql = "DELETE FROM employee WHERE id = ?";
+            let connection;
             this.mysql.getConnection()
-                .then(connection => this.mysql.query(connection, sql, [id])
-                    .then(result => {
-                        connection.release();
-                        result.affectedRows === 1 ? resolve({code: 204, result: null}) :
-                            reject({ code: 404, result: "Resource not found"});
-                    }, error => {
-                        connection.release();
-                        reject({code: 400, result: error});
-                    })
-                );
+                .then(conn => {
+                    connection = conn;
+                    this.mysql.query(connection, sql, [id])
+                })
+                .then(result => {
+                    result.affectedRows === 1 ? resolve({code: 204, result: null}) :
+                        reject({ code: 404, result: "Resource not found"});
+                }, error => {
+                    reject({code: 400, result: error});
+                })
+                .finally(() => {
+                    connection.release();
+                });
         });
     }
 
@@ -162,16 +170,18 @@ export class User {
             let sql = "SELECT id, name FROM department";
             let connection;
             this.mysql.getConnection()
-                .then((c) => {
-                    connection = c;
+                .then(conn => {
+                    connection = conn;
                     return this.mysql.query(connection, sql, [])
                 })
                 .then(result => {
-                    connection.release();
                     resolve({code: 200, result: result});
                 }, error => {
-                    connection.release();
                     reject({code: 400, result: error});
+                })
+                .finally(() => {
+                    console.log("finally");
+                    connection.release();
                 });
         });
     }

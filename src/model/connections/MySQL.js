@@ -6,7 +6,6 @@
 //  Your reuse is governed by the Creative Commons Attribution 3.0 License
 //
 
-
 export class MySQL {
 
     constructor(pool) {

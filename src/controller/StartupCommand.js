@@ -6,7 +6,6 @@
 //  Your reuse is governed by the Creative Commons Attribution 3.0 License
 //
 
-
 import {puremvc} from "../../api/puremvc-2.0.0.js";
 import {ApplicationFacade} from "../ApplicationFacade.js";
 import {ServiceCommand} from "./ServiceCommand.js";
