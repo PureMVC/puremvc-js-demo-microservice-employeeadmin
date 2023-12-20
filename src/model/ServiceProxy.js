@@ -10,7 +10,7 @@ import {puremvc} from "../../api/puremvc-2.0.0.js";
 
 export class ServiceProxy extends puremvc.Proxy {
 
-    static NAME = "ServiceProxy";
+    static get NAME() { return "ServiceProxy" };
 
     constructor(user, role) {
         super(ServiceProxy.NAME, null);
