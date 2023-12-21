@@ -11,10 +11,10 @@ import {StartupCommand} from "./controller/StartupCommand.js";
 
 export class ApplicationFacade extends puremvc.Facade {
 
-    static STARTUP = "startup";
-    static SERVICE = "service";
-    static SERVICE_RESULT = "service_result";
-    static SERVICE_FAULT = "service_fault";
+    static get STARTUP() { return "startup"; }
+    static get SERVICE() { return "service"; }
+    static get SERVICE_RESULT() { return "service_result"; }
+    static get SERVICE_FAULT() { return "service_fault"; }
 
     constructor(multitonKey) {
         super(multitonKey);
