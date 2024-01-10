@@ -1,4 +1,4 @@
-## [PureMVC](http://puremvc.github.com/) [JavaScript](https://github.com/PureMVC/puremvc-js-multicore-framework/wiki) Demo: Employee Admin Microservice
+## [PureMVC](http://puremvc.github.com/) [JavaScript](https://github.com/PureMVC/puremvc-js-multicore-framework/wiki) Demo: Employee Admin Microservice [![Node.js CI](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/actions/workflows/node.js.yml/badge.svg)](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/actions/workflows/node.js.yml)
 This demo illustrates techniques for performing routine server-side maintenance operations in a PureMVC-based Microservice application.
 
 ## Installation
