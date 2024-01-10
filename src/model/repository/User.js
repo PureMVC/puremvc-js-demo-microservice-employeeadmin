@@ -53,7 +53,7 @@ export class User {
             this.mysql.getConnection()
                 .then(conn => {
                     connection = conn
-                    this.mysql.query(connection, sql, [id])
+                    return this.mysql.query(connection, sql, [id])
                 })
                 .then(result => {
                     if (result.length === 0)
@@ -148,12 +148,14 @@ export class User {
         return new Promise((resolve, reject) => {
             let sql = "DELETE FROM employee WHERE id = ?";
             let connection;
+
             this.mysql.getConnection()
                 .then(conn => {
                     connection = conn;
-                    this.mysql.query(connection, sql, [id])
+                    return this.mysql.query(connection, sql, [id])
                 })
                 .then(result => {
+
                     result.affectedRows === 1 ? resolve({code: 204, result: null}) :
                         reject({ code: 404, result: "Resource not found"});
                 }, error => {
@@ -180,7 +182,6 @@ export class User {
                     reject({code: 400, result: error});
                 })
                 .finally(() => {
-                    console.log("finally");
                     connection.release();
                 });
         });

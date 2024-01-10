@@ -1,0 +1,53 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Node.js CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env: # user: root, password: root (default)
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: MySQL Initialization Script
+      run: |
+        mysql -h127.0.0.1 -uroot -proot -e "CREATE DATABASE IF NOT EXISTS employeeadmin;"
+        mysql -h127.0.0.1 -uroot -proot employeeadmin < assets/schema.sql
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm install
+    - name: Start application
+      run: nohup sudo -E npm start & sleep 1
+      env:
+        DATABASE_HOST: 127.0.0.1
+        DATABASE_PORT: 3306
+        MYSQL_DATABASE: employeeadmin
+        MYSQL_USER: root
+        MYSQL_PASSWORD: root
+        MYSQL_ROOT_PASSWORD: root
+    - name: Run tests
+      run: npm test

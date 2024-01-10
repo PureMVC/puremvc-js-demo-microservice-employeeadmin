@@ -17,7 +17,7 @@ export class Service {
 
     startup() {
         https.createServer(this.options, this.service.bind(this)).listen(443, () => {
-            console.log(`Server running on https://localhost:443`);
+            console.log(`Server running on https://127.0.0.1:443`);
         });
     }
 

@@ -25,7 +25,8 @@ import {User} from "../model/repository/User.js";
 export class StartupCommand extends puremvc.SimpleCommand {
 
     execute(notification) {
-        let env = {"DATABASE_HOST": process.env.DATABASE_HOST,
+        let env = {
+            "DATABASE_HOST": process.env.DATABASE_HOST,
             "DATABASE_PORT": process.env.DATABASE_PORT,
             "MYSQL_DATABASE": process.env.MYSQL_DATABASE,
             "MYSQL_USER": process.env.MYSQL_USER,

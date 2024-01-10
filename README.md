@@ -6,6 +6,11 @@ This demo illustrates techniques for performing routine server-side maintenance 
 docker-compose up
 ```
 
+## Usage
+
+* Import assets/postman.json collection into postman
+* Launch [Adminer](http://localhost:8080/?server=mysql&username=mysql&db=employeeadmin) pwd: password
+
 ## Platforms / Technologies
 * [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
 * [NodeJS](https://en.wikipedia.org/wiki/Node.js)

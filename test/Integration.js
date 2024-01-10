@@ -19,7 +19,7 @@ describe("API Integration", () => {
     test("/employees-bad-request", () => {
         return new Promise((resolve, reject) => {
             https.request({
-                method: "POST", hostname: "localhost", port: 443, path: "/employees",
+                method: "POST", hostname: "127.0.0.1", port: 443, path: "/employees",
                 headers: { "Content-Type": "application/json" }
             }, response => {
                 let buffers = [];
@@ -35,7 +35,7 @@ describe("API Integration", () => {
     test("/employees", () => {
         return new Promise((resolve, reject) => {
             https.request({
-                method: "GET", hostname: "localhost", port: 443, path: "/employees"
+                method: "GET", hostname: "127.0.0.1", port: 443, path: "/employees"
             }, response => {
                 let buffers = [];
                 response.on("data", buffers.push.bind(buffers));
@@ -53,7 +53,7 @@ describe("API Integration", () => {
     test("/roles", () => {
         return new Promise((resolve, reject) => {
             https.request({
-                method: "GET", hostname: "localhost", port: 443, path: "/roles"
+                method: "GET", hostname: "127.0.0.1", port: 443, path: "/roles"
             }, response => {
                 let buffers = [];
                 response.on("data", buffers.push.bind(buffers));
@@ -71,7 +71,7 @@ describe("API Integration", () => {
     test("/departments", () => {
         return new Promise((resolve, reject) => {
             https.request({
-                method: "GET", hostname: "localhost", port: 443, path: "/departments"
+                method: "GET", hostname: "127.0.0.1", port: 443, path: "/departments"
             }, response => {
                 let buffers = [];
                 response.on("data", buffers.push.bind(buffers));
@@ -95,7 +95,7 @@ describe("API Integration", () => {
             };
 
             https.request({
-                method: "POST", hostname: "localhost", port: 443, path: "/employees",
+                method: "POST", hostname: "127.0.0.1", port: 443, path: "/employees",
                 headers: { "Content-Type": "application/json" }
             }, response => {
                 let buffers = [];
@@ -107,7 +107,7 @@ describe("API Integration", () => {
                             reject(body);
                         } else {
                             https.request({
-                                method: "DELETE", hostname: "localhost", port: 443, path: "/employees/" + body.id
+                                method: "DELETE", hostname: "127.0.0.1", port: 443, path: "/employees/" + body.id
                             }, (response) => {
                                 let buffers = [];
                                 response.on("data", buffers.push.bind(buffers));
@@ -134,7 +134,7 @@ describe("API Integration", () => {
             };
 
             https.request({ // POST
-                method: "POST", hostname: "localhost", port: 443, path: "/employees",
+                method: "POST", hostname: "127.0.0.1", port: 443, path: "/employees",
                 headers: { "Content-Type": "application/json" }
             }, response => {
                 let buffers = [];
@@ -146,7 +146,7 @@ describe("API Integration", () => {
                     } else {
 
                         https.request({ // GET
-                            method: "GET", hostname: "localhost", port: 443, path: "/employees/" + user.id
+                            method: "GET", hostname: "127.0.0.1", port: 443, path: "/employees/" + user.id
                         }, response => {
                             let buffers = [];
                             response.on("data", buffers.push.bind(buffers));
@@ -159,7 +159,7 @@ describe("API Integration", () => {
                                     assert(user.roles[0].id === 2);
 
                                     https.request({ // DELETE
-                                        method: "DELETE", hostname: "localhost", port: 443, path: "/employees/" + user.id
+                                        method: "DELETE", hostname: "127.0.0.1", port: 443, path: "/employees/" + user.id
                                     }, (response) => {
                                         let buffers = [];
                                         response.on("data", buffers.push.bind(buffers));
