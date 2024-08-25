@@ -6,15 +6,15 @@
 //  Your reuse is governed by the Creative Commons Attribution 3.0 License
 //
 
-import {puremvc} from "../api/puremvc-2.0.0.js";
+import {Facade} from "@puremvc/puremvc-js-multicore-framework";
 import {StartupCommand} from "./controller/StartupCommand.js";
 
-export class ApplicationFacade extends puremvc.Facade {
+export class ApplicationFacade extends Facade {
 
-    static get STARTUP() { return "startup"; }
-    static get SERVICE() { return "service"; }
-    static get SERVICE_RESULT() { return "service_result"; }
-    static get SERVICE_FAULT() { return "service_fault"; }
+    static STARTUP = "startup";
+    static SERVICE = "service";
+    static SERVICE_RESULT= "service_result";
+    static SERVICE_FAULT = "service_fault";
 
     constructor(multitonKey) {
         super(multitonKey);
@@ -25,8 +25,8 @@ export class ApplicationFacade extends puremvc.Facade {
         this.registerCommand(ApplicationFacade.STARTUP, () => new StartupCommand());
     }
 
-    static getInstance(multitonKey) {
-        return puremvc.Facade.getInstance(multitonKey, k => new ApplicationFacade(k));
+    static getInstance(key) {
+        return Facade.getInstance(key, k => new ApplicationFacade(k));
     }
 
     startup() {

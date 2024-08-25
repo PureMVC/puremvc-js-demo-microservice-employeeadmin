@@ -1,16 +1,20 @@
 {
   "name": "employeeadmin",
   "version": "1.0.0",
-  "dependencies": {
-    "mysql": "2.18.1"
-  },
   "description": "PureMVC NodeJS EmployeeAdmin Microservice Demo",
   "main": "src/index.js",
   "type": "module",
   "scripts": {
     "start": "node src/index.js",
-    "start:nodemon": "nodemon node src/index.js",
+    "start:nodemon": "nodemon src/index.js",
     "test": "node --test"
+  },
+  "dependencies": {
+    "@puremvc/puremvc-js-multicore-framework": "^2.0.7",
+    "mysql": "2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
   },
   "repository": {
     "type": "git",

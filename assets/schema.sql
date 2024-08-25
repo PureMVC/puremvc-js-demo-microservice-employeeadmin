@@ -40,13 +40,13 @@ INSERT INTO `department` VALUES (1,'Accounting'),(2,'Sales'),(3,'Plant'),(4,'Shi
 UNLOCK TABLES;
 
 --
--- Table structure for table `employee`
+-- Table structure for table `user`
 --
 
-DROP TABLE IF EXISTS `employee`;
+DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee` (
+CREATE TABLE `user` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
   `first` varchar(45) NOT NULL,
@@ -57,45 +57,45 @@ CREATE TABLE `employee` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_username` (`username`),
   KEY `fk_department_idx` (`department_id`),
-  CONSTRAINT `fk_employee_department_id` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_user_department_id` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employee`
+-- Dumping data for table `user`
 --
 
-LOCK TABLES `employee` WRITE;
-/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,'lstooge','Larry','Stooge','larry@stooges.com','ijk456',1),(2,'cstooge','Curly','Stooge','curly@stooges.com','xyz987',2),(3,'mstooge','Moe','Stooge','moe@stooges.com','abc123',3);
-/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'lstooge','Larry','Stooge','larry@stooges.com','ijk456',1),(2,'cstooge','Curly','Stooge','curly@stooges.com','xyz987',2),(3,'mstooge','Moe','Stooge','moe@stooges.com','abc123',3);
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `employee_role`
+-- Table structure for table `user_role`
 --
 
-DROP TABLE IF EXISTS `employee_role`;
+DROP TABLE IF EXISTS user_role;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `employee_role` (
-  `employee_id` int(10) unsigned NOT NULL,
+CREATE TABLE `user_role` (
+  `user_id` int(10) unsigned NOT NULL,
   `role_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`employee_id`,`role_id`),
+  PRIMARY KEY (`user_id`,`role_id`),
   KEY `fk_role_id_idx` (`role_id`),
-  CONSTRAINT `fk_employee_role_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_employee_role_user_id` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_user_role_role_id` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_user_role_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `employee_role`
+-- Dumping data for table `user_role`
 --
 
-LOCK TABLES `employee_role` WRITE;
-/*!40000 ALTER TABLE `employee_role` DISABLE KEYS */;
-INSERT INTO `employee_role` VALUES (2,2),(2,3),(1,4),(2,5),(3,7),(3,8),(3,9);
-/*!40000 ALTER TABLE `employee_role` ENABLE KEYS */;
+LOCK TABLES user_role WRITE;
+/*!40000 ALTER TABLE user_role DISABLE KEYS */;
+INSERT INTO user_role VALUES (2,2),(2,3),(1,4),(2,5),(3,7),(3,8),(3,9);
+/*!40000 ALTER TABLE user_role ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -118,7 +118,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'Administrator'),(2,'Accounts Payable'),(3,'Accounts Receivable'),(4,'Employee Benefits'),(5,'General Ledger'),(6,'Payroll'),(7,'Inventory'),(8,'Production'),(9,'Quality Control'),(10,'Sales'),(11,'Orders'),(12,'Customers'),(13,'Shipping'),(14,'Returns');
+INSERT INTO `role` VALUES (1,'Administrator'),(2,'Accounts Payable'),(3,'Accounts Receivable'),(4,'user Benefits'),(5,'General Ledger'),(6,'Payroll'),(7,'Inventory'),(8,'Production'),(9,'Quality Control'),(10,'Sales'),(11,'Orders'),(12,'Customers'),(13,'Shipping'),(14,'Returns');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

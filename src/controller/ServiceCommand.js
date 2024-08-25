@@ -6,67 +6,78 @@
 //  Your reuse is governed by the Creative Commons Attribution 3.0 License
 //
 
-import {puremvc} from "../../api/puremvc-2.0.0.js";
+import {SimpleCommand} from "@puremvc/puremvc-js-multicore-framework";
 import {ApplicationFacade} from "../ApplicationFacade.js";
 import {ServiceProxy} from "../model/ServiceProxy.js";
 
 import {URL} from "url";
 
-export class ServiceCommand extends puremvc.SimpleCommand {
+export class ServiceCommand extends SimpleCommand {
 
-    execute(notification) {
-        const serviceRequest = notification.body;
-        const request = serviceRequest.request;
+    async execute(notification) {
+        const {request, response, requestData} = notification.body;
+        const { method, url } = request;
         const serviceProxy = this.facade.retrieveProxy(ServiceProxy.NAME);
+        let resultData;
 
         try {
-            switch (new URL(request.url, "https://puremvc.org").pathname) {
-                case "/employees":
-                    if (request.method === "GET") {
-                        serviceProxy.findAllUsers()
-                            .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
-                    }  else if (request.method === "POST") {
-                        serviceProxy.save(serviceRequest.requestData)
-                            .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
+            switch (new URL(url, "https://puremvc.org").pathname) {
+                case "/users":
+                    if (method === "GET") {
+                        resultData = await serviceProxy.findAllUsers();
+                    } else if (method === "POST") {
+                        resultData = await serviceProxy.add(requestData);
+                    } else if (method === "PUT") {
+                        resultData = await serviceProxy.update(requestData);
                     }
                     break;
                 case "/departments":
-                    serviceProxy.findAllDepartments()
-                        .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
+                    resultData = await serviceProxy.findAllDepartments();
                     break;
                 case "/roles":
-                    serviceProxy.findAllRoles()
-                        .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
+                    resultData = await serviceProxy.findAllRoles();
                     break;
                 default:
-                    let matches = request.url.match(/^\/employees\/(\d+)$/); // employees/:id
-                    if (matches) {
-                        if (request.method === "GET") {
-                            serviceProxy.findUserById(matches[1])
-                                .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
-                        } else if (request.method === "UPDATE") {
-                            serviceProxy.update(serviceRequest.requestData)
-                                .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
-                        } else if (request.method === "DELETE") {
-                            serviceProxy.deleteById(parseInt(matches[1]))
-                                .then(this.result.bind(this, serviceRequest), this.fault.bind(this, serviceRequest));
+                    let users = url.match(/^\/users\/(\d+)$/); // matches employees/:id
+                    let userRoles = url.match(/^\/users\/(\d+)\/roles$/); // matches employees/:id/roles
+
+                    if (users) {
+                        if (method === "GET") {
+                            resultData = await serviceProxy.findUserById(users[1])
+                        } else if (method === "PUT") {
+                            resultData = await serviceProxy.update(requestData);
+                        } else if (method === "DELETE") {
+                            resultData = await serviceProxy.deleteById(parseInt(users[1]));
+                        } else {
+                            resultData = {status: 404, body: {code: 404, message: "Resource not found" }};
                         }
+                    } else if (userRoles) {
+                        if (method === "GET") {
+                            resultData = await serviceProxy.findRolesById(userRoles[1]);
+                        } else if (method === "PUT") {
+                            resultData = await serviceProxy.updateRolesById(userRoles[1], requestData);
+                        } else {
+                            resultData = {status: 404, body: {code: 404, message: "Resource not found" }};
+                        }
+                    } else {
+                        resultData = {status: 404, body: {code: 404, message: "Resource not found" }};
                     }
                     break;
             }
         } catch (error) {
-            this.fault(serviceRequest, {status: 500, result: error});
+            this.fault(request, response, error);
+            return;
         }
+
+        this.result(request, response, resultData);
     }
 
-    result(serviceRequest, resultData) {
-        serviceRequest.resultData = resultData;
-        this.facade.sendNotification(ApplicationFacade.SERVICE_RESULT, serviceRequest);
+    result(request, response, resultData) {
+        this.facade.sendNotification(ApplicationFacade.SERVICE_RESULT, {request, response, resultData});
     }
 
-    fault(serviceRequest, resultData) {
-        serviceRequest.resultData = resultData;
-        this.facade.sendNotification(ApplicationFacade.SERVICE_FAULT, serviceRequest);
+    fault(request, response, resultData) {
+        this.facade.sendNotification(ApplicationFacade.SERVICE_FAULT, {request, response, resultData});
     }
 
 }

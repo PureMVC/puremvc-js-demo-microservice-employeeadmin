@@ -3,23 +3,23 @@ This demo illustrates techniques for performing routine server-side maintenance 
 
 ## Installation
 ```
-docker-compose up
+docker compose up
 ```
 
 ## Usage
 
-* Import assets/postman.json collection into postman
-* Launch [Adminer](http://localhost:8080/?server=mysql&username=mysql&db=employeeadmin) pwd: password
+`* Import assets/postman.json collection into postman
+`* Launch [Adminer](http://localhost:8080/?server=mysql&username=mysql&db=employeeadmin) pwd: password
 
 ## Platforms / Technologies
 * [JavaScript](https://en.wikipedia.org/wiki/JavaScript)
 * [NodeJS](https://en.wikipedia.org/wiki/Node.js)
-* [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
-* [Docker](https://en.wikipedia.org/wiki/Docker_(software))
 * [MySQL](https://en.wikipedia.org/wiki/MySQL)
+* [Docker](https://en.wikipedia.org/wiki/Docker_(software))
+* [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
 
 #### Legacy Classic JS based Demo
-* [Demo: Employee Admin Microservice](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/tree/classic)
+* [Demo: Employee Admin Microservice](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/tree/2.0.0)
 
 ## Status
 Production - [Version 2.0](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/blob/master/VERSION)

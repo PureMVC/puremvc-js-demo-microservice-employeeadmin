@@ -1,44 +1,42 @@
 {
 	"info": {
-		"_postman_id": "b3dad4da-b3ef-4da1-aea7-065790e37c05",
-		"name": "EmployeeAdmin SSL",
+		"_postman_id": "650fdf55-aa55-46c9-95d6-da4da1d73699",
+		"name": "EmployeeAdmin",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "13615850"
 	},
 	"item": [
 		{
-			"name": "/employees",
+			"name": "/users",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:443/employees",
-					"protocol": "https",
+					"raw": "http://localhost/users",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "443",
 					"path": [
-						"employees"
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "/employees/:id",
+			"name": "/users/:id",
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:443/employees/1",
-					"protocol": "https",
+					"raw": "http://localhost/users/1",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "443",
 					"path": [
-						"employees",
+						"users",
 						"1"
 					]
 				}
@@ -46,44 +44,14 @@
 			"response": []
 		},
 		{
-			"name": "/employees",
+			"name": "/users",
 			"request": {
 				"method": "POST",
 				"header": [
 					{
 						"key": "Content-Type",
-						"name": "Content-Type",
 						"value": "application/json",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"username\": \"sshemp\",\n    \"first\": \"Shemp\",\n    \"last\": \"Stooge\",\n    \"email\": \"sshemp@stooges.com\",\n    \"password\": \"ghi123\",\n    \"department\": {\n        \"id\": 2,\n        \"name\": \"Sales\"\n    },\n    \"roles\": [\n        {\n            \"id\": 1,\n            \"name\": \"Administrator\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Accounts Payable\"\n        }\n    ]\n}"
-				},
-				"url": {
-					"raw": "https://localhost:443/employees",
-					"protocol": "https",
-					"host": [
-						"localhost"
-					],
-					"port": "443",
-					"path": [
-						"employees"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/employees_bad",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
 						"name": "Content-Type",
-						"value": "application/json",
 						"type": "text"
 					}
 				],
@@ -92,34 +60,140 @@
 					"raw": "{\n    \"username\": \"sshemp\",\n    \"first\": \"Shemp\",\n    \"last\": \"Stooge\",\n    \"email\": \"sshemp@stooges.com\",\n    \"password\": \"ghi123\",\n    \"department\": {\n        \"id\": 2,\n        \"name\": \"Sales\"\n    }\n}"
 				},
 				"url": {
-					"raw": "http://localhost:8080/employees",
+					"raw": "http://localhost/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8080",
 					"path": [
-						"employees"
+						"users"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "/employees/:id",
+			"name": "/users bad request",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"name": "Content-Type",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"first\":\"Shemp\",\"last\":\"Stooge\""
+				},
+				"url": {
+					"raw": "http://localhost/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/users/:id",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"first\": \"Shemp\",\n\t\"last\": \"Stooge\",\n\t\"email\": \"shemp@stooges.com\",\n\t\"department\": {\n\t\t\"id\": \"2\",\n\t\t\"name\": \"Sales\"\n\t}\n}"
+				},
+				"url": {
+					"raw": "http://localhost/employees/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"employees",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/users/:id",
 			"request": {
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:443/employees/4",
-					"protocol": "https",
+					"raw": "http://localhost/users/4",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "443",
 					"path": [
-						"employees",
+						"users",
 						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/users/:id/roles",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/users/1/roles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"users",
+						"1",
+						"roles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/users/:id/roles",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"id\": 1,\n        \"name\": \"Administrator\"\n    },\n    {\n        \"id\": 2,\n        \"name\": \"Accounts Payable\"\n    },\n    {\n        \"id\": 3,\n        \"name\": \"Accounts Receivable\"\n    }\n]"
+				},
+				"url": {
+					"raw": "http://localhost/users/1/roles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"users",
+						"1",
+						"roles"
 					]
 				}
 			},
@@ -131,12 +205,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:443/roles",
-					"protocol": "https",
+					"raw": "http://localhost/roles",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "443",
 					"path": [
 						"roles"
 					]
@@ -150,12 +223,11 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "https://localhost:443/departments",
-					"protocol": "https",
+					"raw": "http://localhost/departments",
+					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "443",
 					"path": [
 						"departments"
 					]

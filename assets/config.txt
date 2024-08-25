@@ -1,12 +1,17 @@
+===================================
 SSL Certificates
+===================================
 openssl req -nodes -new -x509 -keyout server.key -out server.cert
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'; // allow nodejs to accept self-signed certificates
 
+===================================
 WebStorm Run/Debug Configuration
-MySQL
+===================================
 DATABASE_HOST=localhost;DATABASE_PORT=6603;MYSQL_DATABASE=employeeadmin;MYSQL_USER=mysql;MYSQL_PASSWORD=password;
 
+===================================
 Postman Configuration for Proxyman
+===================================
 Proxy -> Enable "Use Custom Proxy Configuration"
 - Check HTTP and HTTPS checkboxes
 - Set IP = 127.0.0.1 at port 9090

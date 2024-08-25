@@ -8,37 +8,33 @@
 
 import assert from "node:assert";
 import {describe, test} from "node:test";
-import https from "node:https";
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
-let xtest = (name, callback) => {}
+import http from "node:http";
 
 describe("API Integration", () => {
 
-    test("/employees-bad-request", () => {
+    test("/users-bad-request", () => {
         return new Promise((resolve, reject) => {
-            https.request({
-                method: "POST", hostname: "127.0.0.1", port: 443, path: "/employees",
+            http.request({
+                method: "POST", hostname: "127.0.0.1", path: "/users",
                 headers: { "Content-Type": "application/json" }
             }, response => {
                 let buffers = [];
-                response.on("data", buffers.push.bind(buffers));
+                response.on("data", data => buffers.push(data));
                 response.on("end", () => {
                     assert(response.statusCode === 400);
                     resolve();
                 });
-            }).on("error", reject).end('{"first":"Shemp","last":"Stooge"');
+            }).on("error", reject).end('{"first":"Shemp","last":"Stooge"'); // missing }
         });
     });
 
-    test("/employees", () => {
+    test("/users", () => {
         return new Promise((resolve, reject) => {
-            https.request({
-                method: "GET", hostname: "127.0.0.1", port: 443, path: "/employees"
+            http.request({
+                method: "GET", hostname: "127.0.0.1", path: "/users"
             }, response => {
                 let buffers = [];
-                response.on("data", buffers.push.bind(buffers));
+                response.on("data", data => buffers.push(data));
                 response.on("end", () => {
                     try {
                         JSON.parse(Buffer.concat(buffers).toString());
@@ -52,11 +48,11 @@ describe("API Integration", () => {
 
     test("/roles", () => {
         return new Promise((resolve, reject) => {
-            https.request({
-                method: "GET", hostname: "127.0.0.1", port: 443, path: "/roles"
+            http.request({
+                method: "GET", hostname: "127.0.0.1", path: "/roles"
             }, response => {
                 let buffers = [];
-                response.on("data", buffers.push.bind(buffers));
+                response.on("data", data => buffers.push(data));
                 response.on("end", () => {
                     try {
                         JSON.parse(Buffer.concat(buffers).toString());
@@ -70,14 +66,14 @@ describe("API Integration", () => {
 
     test("/departments", () => {
         return new Promise((resolve, reject) => {
-            https.request({
-                method: "GET", hostname: "127.0.0.1", port: 443, path: "/departments"
+            http.request({
+                method: "GET", hostname: "localhost", path: "/departments"
             }, response => {
                 let buffers = [];
-                response.on("data", buffers.push.bind(buffers));
+                response.on("data", data => buffers.push(data));
                 response.on("end", () => {
                     try {
-                        JSON.parse(Buffer.concat(buffers).toString());
+                        let d = JSON.parse(Buffer.concat(buffers).toString());
                         assert(response.statusCode === 200);
                         resolve();
                     } catch(error) { reject(error) }
@@ -94,23 +90,23 @@ describe("API Integration", () => {
                 password: "ghi123", department: { id: 2, name: "Sales" }
             };
 
-            https.request({
-                method: "POST", hostname: "127.0.0.1", port: 443, path: "/employees",
+            http.request({
+                method: "POST", hostname: "127.0.0.1", path: "/users",
                 headers: { "Content-Type": "application/json" }
             }, response => {
                 let buffers = [];
-                response.on("data", buffers.push.bind(buffers));
+                response.on("data", data => buffers.push(data));
                 response.on("end", () => {
                     try {
                         let body = JSON.parse(Buffer.concat(buffers).toString());
                         if (response.statusCode !== 201) {
                             reject(body);
                         } else {
-                            https.request({
-                                method: "DELETE", hostname: "127.0.0.1", port: 443, path: "/employees/" + body.id
+                            http.request({
+                                method: "DELETE", hostname: "127.0.0.1", path: "/users/" + body.id
                             }, (response) => {
                                 let buffers = [];
-                                response.on("data", buffers.push.bind(buffers));
+                                response.on("data", data => buffers.push(data));
                                 response.on('end', () => {
                                     resolve();
                                 });
@@ -133,23 +129,23 @@ describe("API Integration", () => {
                 roles: [{id: 2, name: "Accounts Payable"}]
             };
 
-            https.request({ // POST
-                method: "POST", hostname: "127.0.0.1", port: 443, path: "/employees",
+            http.request({ // POST
+                method: "POST", hostname: "127.0.0.1", path: "/users",
                 headers: { "Content-Type": "application/json" }
             }, response => {
                 let buffers = [];
-                response.on("data", buffers.push.bind(buffers));
+                response.on("data", data => buffers.push(data));
                 response.on("end", () => {
                     let user = JSON.parse(Buffer.concat(buffers).toString());
                     if (response.statusCode !== 201) {
                         reject(user);
                     } else {
 
-                        https.request({ // GET
-                            method: "GET", hostname: "127.0.0.1", port: 443, path: "/employees/" + user.id
+                        http.request({ // GET
+                            method: "GET", hostname: "127.0.0.1", path: "/users/" + user.id
                         }, response => {
                             let buffers = [];
-                            response.on("data", buffers.push.bind(buffers));
+                            response.on("data", data => buffers.push(data));
                             response.on("end", () => {
                                 let user = JSON.parse(Buffer.concat(buffers).toString());
                                 if (response.statusCode !== 200) {
@@ -158,12 +154,12 @@ describe("API Integration", () => {
                                     assert(user.roles.length === 1);
                                     assert(user.roles[0].id === 2);
 
-                                    https.request({ // DELETE
-                                        method: "DELETE", hostname: "127.0.0.1", port: 443, path: "/employees/" + user.id
+                                    http.request({ // DELETE
+                                        method: "DELETE", hostname: "127.0.0.1", path: "/users/" + user.id
                                     }, (response) => {
                                         let buffers = [];
-                                        response.on("data", buffers.push.bind(buffers));
-                                        response.on('end', () => {
+                                        response.on("data", data => buffers.push(data));
+                                        response.on("end", () => {
                                             if (response.statusCode === 204)
                                                 resolve();
                                             else reject();

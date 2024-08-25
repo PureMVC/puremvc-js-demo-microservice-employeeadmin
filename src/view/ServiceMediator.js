@@ -6,29 +6,34 @@
 //  Your reuse is governed by the Creative Commons Attribution 3.0 License
 //
 
-import {puremvc} from "../../api/puremvc-2.0.0.js";
+import {Mediator} from "@puremvc/puremvc-js-multicore-framework";
 import {ApplicationFacade} from "../ApplicationFacade.js";
-import {ServiceRequest} from "../model/request/ServiceRequest.js";
+import { EventEmitter } from "events";
 
-export class ServiceMediator extends puremvc.Mediator {
+export class ServiceMediator extends Mediator {
 
     static NAME = "ServiceMediator";
+
+    handler = ({request, response, requestData}) => {
+        this.service(request, response, requestData);
+    }
 
     constructor(service) {
         super(ServiceMediator.NAME, service);
     }
 
     onRegister() {
-        const self = this;
-        function IService() {
-            this.service = self.service.bind(self);
-        }
-        this.viewComponent.setDelegate(new IService());
-        this.viewComponent.startup();
+        this.emitter = new EventEmitter();
+        this.emitter.on("service", this.handler);
+        this.viewComponent.startup(this.emitter);
+    }
+
+    onRemove() {
+        this.emitter.off("service", this.handler);
     }
 
     service(request, response, requestData) {
-        this.facade.sendNotification(ApplicationFacade.SERVICE, new ServiceRequest(request, response, requestData));
+        this.facade.sendNotification(ApplicationFacade.SERVICE, {request, response, requestData});
     }
 
     listNotificationInterests() {
@@ -39,14 +44,14 @@ export class ServiceMediator extends puremvc.Mediator {
     }
 
     handleNotification(notification) {
-        let serviceRequest = notification.body;
+        const { request, response, resultData } = notification.body;
         switch (notification.name) {
             case ApplicationFacade.SERVICE_RESULT:
-                this.viewComponent.result(serviceRequest.request, serviceRequest.response, serviceRequest.resultData);
+                this.viewComponent.result(request, response, resultData);
                 break;
 
             case ApplicationFacade.SERVICE_FAULT:
-                this.viewComponent.fault(serviceRequest.request, serviceRequest.response, serviceRequest.resultData);
+                this.viewComponent.fault(request, response, resultData);
                 break;
         }
     }

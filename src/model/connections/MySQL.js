@@ -20,17 +20,9 @@ export class MySQL {
         });
     }
 
-    query(connection, sql, values) {
-        return new Promise((resolve, reject) => {
-            connection.query(sql, values, (error, result) => {
-                error ? reject(error.sqlMessage) : resolve(result);
-            });
-        });
-    }
-
     beginTransaction(connection) {
         return new Promise((resolve, reject) => {
-            connection.beginTransaction((error) => {
+            connection.beginTransaction(error => {
                 error ? reject(error) : resolve(connection);
             });
         });
@@ -38,15 +30,31 @@ export class MySQL {
 
     commit(connection) {
         return new Promise((resolve, reject) => {
-            connection.commit((error) => {
+            connection.commit(error => {
                 error ? reject(error) : resolve(connection);
             });
         });
     }
 
     rollback(connection) {
+        return new Promise(resolve => {
+            connection.rollback(() => resolve());
+        });
+    }
+
+    tryConnecting() {
         return new Promise((resolve, reject) => {
-            connection.rollback(() => { reject() });
+            console.log("Connecting MySQL...");
+            let intervalId = setInterval(() => {
+                this.pool.query("SELECT 1 FROM dual", error => {
+                    if (error) {
+                        console.log("MySQL: " + error);
+                    } else {
+                        clearInterval(intervalId);
+                        resolve();
+                    }
+                });
+            }, 1000);
         });
     }
 
