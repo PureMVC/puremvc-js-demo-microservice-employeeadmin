@@ -2,7 +2,6 @@ services:
 
   employeeadmin:
     container_name: employeeadmin
-    image: employeeadmin:latest
     build:
       context: .
       dockerfile: Dockerfile
