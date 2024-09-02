@@ -46,7 +46,7 @@ export class ServiceProxy extends Proxy {
         try {
             await this.mySQL.beginTransaction(connection);
             const result = await this.user.add(connection, user);
-            if (user.roles)
+            if (user.roles && user.roles.length > 0)
                 await this.role.updateRolesById(connection, result.body.id, user.roles);
             await this.mySQL.commit(connection);
             return result;
@@ -65,7 +65,8 @@ export class ServiceProxy extends Proxy {
             const result = await this.user.update(connection, user);
             if (user.roles) {
                 await this.role.deleteRolesById(connection, user.id);
-                await this.role.updateRolesById(connection, user.id, user.roles)
+                if (user.roles.length > 0)
+                    await this.role.updateRolesById(connection, user.id, user.roles)
             }
             await this.mySQL.commit(connection);
             result.body = user;

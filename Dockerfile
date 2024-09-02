@@ -6,9 +6,8 @@ WORKDIR /service
 COPY package*.json ./
 COPY . .
 
-# DEVELOPMENT
+# DEVELOPMENT - Enable Volume in docker-compose.yml
 #ENV NODE_ENV development
-## Enable Volume in docker-compose.yml
 #RUN npm install
 #CMD ["npx", "nodemon", "npm", "start"]
 

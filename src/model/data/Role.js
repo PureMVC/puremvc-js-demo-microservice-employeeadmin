@@ -46,7 +46,7 @@ export class Role {
             let sql = "INSERT INTO user_role(user_id, role_id) VALUES ?;"
             let values = roles.map(({id, name}) => [userId, id]);
             connection.query(sql, [values], (error, result) => {
-                error ? reject({status: 500, body: error}) : resolve({status: 200, body: roles});
+                error ? reject({status: 500, body: error.sqlMessage}) : resolve({status: 200, body: roles});
             });
         });
     }
