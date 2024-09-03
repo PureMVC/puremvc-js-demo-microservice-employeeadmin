@@ -12,17 +12,17 @@ export class ServiceProxy extends Proxy {
 
     static get NAME() { return "ServiceProxy" };
 
-    constructor(mySQL, user, role) {
+    constructor(mySQL, userData, roleData) {
         super(ServiceProxy.NAME, null);
         this.mySQL = mySQL;
-        this.user = user;
-        this.role = role;
+        this.userData = userData;
+        this.roleData = roleData;
     }
 
     async findAllUsers() {
         const connection = await this.mySQL.getConnection();
         try {
-            return await this.user.findAllUsers(connection);
+            return await this.userData.findAllUsers(connection);
         } catch (error) {
             throw error;
         } finally {
@@ -33,7 +33,7 @@ export class ServiceProxy extends Proxy {
     async findUserById(id) {
         const connection = await this.mySQL.getConnection();
         try {
-            return await this.user.findUserById(connection, id);
+            return await this.userData.findUserById(connection, id);
         } catch(error) {
             throw error;
         } finally {
@@ -45,9 +45,9 @@ export class ServiceProxy extends Proxy {
         const connection = await this.mySQL.getConnection();
         try {
             await this.mySQL.beginTransaction(connection);
-            const result = await this.user.add(connection, user);
+            const result = await this.userData.add(connection, user);
             if (user.roles && user.roles.length > 0)
-                await this.role.updateRolesById(connection, result.body.id, user.roles);
+                await this.roleData.updateRolesById(connection, result.body.id, user.roles);
             await this.mySQL.commit(connection);
             return result;
         } catch(error) {
@@ -62,11 +62,11 @@ export class ServiceProxy extends Proxy {
         const connection = await this.mySQL.getConnection();
         try {
             await this.mySQL.beginTransaction(connection);
-            const result = await this.user.update(connection, user);
+            const result = await this.userData.update(connection, user);
             if (user.roles) {
-                await this.role.deleteRolesById(connection, user.id);
+                await this.roleData.deleteRolesById(connection, user.id);
                 if (user.roles.length > 0)
-                    await this.role.updateRolesById(connection, user.id, user.roles)
+                    await this.roleData.updateRolesById(connection, user.id, user.roles)
             }
             await this.mySQL.commit(connection);
             result.body = user;
@@ -82,7 +82,7 @@ export class ServiceProxy extends Proxy {
     async deleteById(id) {
         const connection = await this.mySQL.getConnection();
         try {
-            return await this.user.deleteById(connection, id);
+            return await this.userData.deleteById(connection, id);
         } catch(error) {
             throw error;
         } finally {
@@ -93,7 +93,7 @@ export class ServiceProxy extends Proxy {
     async findAllDepartments() {
         const connection = await this.mySQL.getConnection();
         try {
-            return await this.user.findAllDepartments(connection);
+            return await this.userData.findAllDepartments(connection);
         } catch(error) {
             throw error;
         } finally {
@@ -104,7 +104,7 @@ export class ServiceProxy extends Proxy {
     async findAllRoles() {
         const connection = await this.mySQL.getConnection();
         try {
-            return await this.role.findAllRoles(connection);
+            return await this.roleData.findAllRoles(connection);
         } catch(error) {
             throw error;
         } finally {
@@ -115,7 +115,7 @@ export class ServiceProxy extends Proxy {
     async findRolesById(id) {
         const connection = await this.mySQL.getConnection();
         try {
-            return await this.role.findRolesById(connection, id);
+            return await this.roleData.findRolesById(connection, id);
         } catch(error) {
             throw error;
         } finally {
@@ -127,8 +127,8 @@ export class ServiceProxy extends Proxy {
         const connection = await this.mySQL.getConnection();
         try {
             await this.mySQL.beginTransaction(connection);
-            await this.role.deleteRolesById(connection, id);
-            const payload = await this.role.updateRolesById(connection, id, roles);
+            await this.roleData.deleteRolesById(connection, id);
+            const payload = await this.roleData.updateRolesById(connection, id, roles);
             await this.mySQL.commit(connection);
             return payload;
         } catch (error) {

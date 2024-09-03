@@ -18,8 +18,8 @@ import {ServiceProxy} from "../model/ServiceProxy.js";
 import {ServiceMediator} from "../view/ServiceMediator.js";
 import {Service} from "../view/components/Service.js";
 import {MySQL} from "../model/connections/MySQL.js";
-import {User} from "../model/data/User.js";
-import {Role} from "../model/data/Role.js";
+import {UserData} from "../model/data/UserData.js";
+import {RoleData} from "../model/data/RoleData.js";
 
 export class StartupCommand extends SimpleCommand {
 
@@ -53,7 +53,7 @@ export class StartupCommand extends SimpleCommand {
         mySQL.tryConnecting()
             .then(() => {
                 this.facade.registerCommand(ApplicationFacade.SERVICE, () => new ServiceCommand());
-                this.facade.registerProxy(new ServiceProxy(mySQL, new User(), new Role()));
+                this.facade.registerProxy(new ServiceProxy(mySQL, new UserData(), new RoleData()));
                 this.facade.registerMediator(new ServiceMediator(new Service(options)));
             });
     }
