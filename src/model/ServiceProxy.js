@@ -128,9 +128,10 @@ export class ServiceProxy extends Proxy {
         try {
             await this.mySQL.beginTransaction(connection);
             await this.roleData.deleteRolesById(connection, id);
-            const payload = await this.roleData.updateRolesById(connection, id, roles);
+            if (roles.length > 0)
+                await this.roleData.updateRolesById(connection, id, roles);
             await this.mySQL.commit(connection);
-            return payload;
+            return {status: 200, body: roles};
         } catch (error) {
             await this.mySQL.rollback(connection);
             throw error;

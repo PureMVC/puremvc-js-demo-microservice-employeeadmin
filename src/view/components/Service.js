@@ -118,6 +118,7 @@ export class Service {
     }
 
     fault(request, response, {status, body}) {
+        console.log(status, body);
         response.writeHead(status, {"Content-Type": "application/json"});
         response.end(JSON.stringify({code: status, message: body}));
     }
