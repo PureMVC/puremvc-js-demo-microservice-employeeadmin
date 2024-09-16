@@ -94,7 +94,7 @@ CREATE TABLE `user_role` (
 
 LOCK TABLES user_role WRITE;
 /*!40000 ALTER TABLE user_role DISABLE KEYS */;
-INSERT INTO user_role VALUES (2,2),(2,3),(1,4),(2,5),(3,7),(3,8),(3,9);
+INSERT INTO user_role VALUES (1,4),(2,3),(2,5),(3,8),(3,10),(3,13);
 /*!40000 ALTER TABLE user_role ENABLE KEYS */;
 UNLOCK TABLES;
 
