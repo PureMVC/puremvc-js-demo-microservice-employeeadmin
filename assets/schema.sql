@@ -118,7 +118,7 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'Administrator'),(2,'Accounts Payable'),(3,'Accounts Receivable'),(4,'user Benefits'),(5,'General Ledger'),(6,'Payroll'),(7,'Inventory'),(8,'Production'),(9,'Quality Control'),(10,'Sales'),(11,'Orders'),(12,'Customers'),(13,'Shipping'),(14,'Returns');
+INSERT INTO `role` VALUES (1,'Administrator'),(2,'Accounts Payable'),(3,'Accounts Receivable'),(4,'Employee Benefits'),(5,'General Ledger'),(6,'Payroll'),(7,'Inventory'),(8,'Production'),(9,'Quality Control'),(10,'Sales'),(11,'Orders'),(12,'Customers'),(13,'Shipping'),(14,'Returns');
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
