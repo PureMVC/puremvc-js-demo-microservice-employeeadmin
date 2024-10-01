@@ -14,6 +14,12 @@ import {URL} from "url";
 
 export class ServiceCommand extends SimpleCommand {
 
+    /**
+     * @param {Notification} notification
+     * @param {IncomingMessage} notification.body.request
+     * @param {ServerResponse} notification.body.response
+     * @returns {Promise<void>}
+     */
     async execute(notification) {
         const {request, response, requestData} = notification.body;
         const { method, url } = request;

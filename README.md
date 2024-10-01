@@ -18,8 +18,8 @@ docker compose up
 * [Docker](https://en.wikipedia.org/wiki/Docker_(software))
 * [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
 
-#### Legacy Classic JS based Demo
-* [Demo: Employee Admin Microservice](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/tree/1.0.0)
+#### Legacy Classic JS-based Demo
+* [Demo: Employee Admin Microservice](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/tree/2.0.0)
 
 ## Status
 Production - [Version 2.0](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/blob/master/VERSION)
