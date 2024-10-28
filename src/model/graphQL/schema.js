@@ -30,10 +30,12 @@ export const schema = `#graphql
         findById(id: ID!): User,
         findAllDepartments: [Department!]!,
         findAllRoles: [Role!]!
+        findRolesById(id: ID!): [Role!]!
     }
     type Mutation {
         save(username: String!, first: String!, last: String!, email: String!, password: String!, department: IDepartment!, roles: [IRole!]): User
         update(id: ID!, username: String!, first: String!, last: String!, email: String!, password: String!, department: IDepartment!, roles: [IRole!]): User
         deleteById(id: ID!): Boolean
+        updateRolesById(id: ID!, roles: [IRole!]!): Boolean
     }
 `

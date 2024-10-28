@@ -44,8 +44,8 @@ export class RoleData {
     updateRolesById(connection, userId, roles) {
         return new Promise((resolve, reject) => {
             let sql = "INSERT INTO user_role(user_id, role_id) VALUES ?;"
-            let values = roles.map(({id, name}) => [userId, id]);
-            connection.query(sql, [values], (error, result) => {
+            let values = roles.map(({id}) => [userId, id]);
+            connection.query(sql, [values], (error) => {
                 error ? reject({status: 500, body: error.sqlMessage}) : resolve({status: 200, body: roles});
             });
         });

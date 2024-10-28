@@ -15,6 +15,9 @@ export const resolvers = (serviceProxy) => ({
         },
         findAllRoles: async () => {
             return (await serviceProxy.findAllRoles()).body;
+        },
+        findRolesById: async (_, args) => {
+            return (await serviceProxy.findRolesById(Number(args.id))).body;
         }
     },
     Mutation: {
@@ -26,6 +29,9 @@ export const resolvers = (serviceProxy) => ({
         },
         deleteById: async (_, args) => {
             return (await serviceProxy.deleteById(Number(args.id))).body === null;
+        },
+        updateRolesById: async (_, args) => {
+            return (await serviceProxy.updateRolesById(Number(args.id), args.roles)).body === null;
         }
     },
     User: {
