@@ -16,7 +16,7 @@ docker compose up
 * [NodeJS](https://en.wikipedia.org/wiki/Node.js)
 * [MySQL](https://en.wikipedia.org/wiki/MySQL)
 * [Docker](https://en.wikipedia.org/wiki/Docker_(software))
-* [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
+* [GraphQL](https://en.wikipedia.org/wiki/GraphQL)
 
 #### Legacy Classic JS-based Demo
 * [Demo: Employee Admin Microservice](https://github.com/PureMVC/puremvc-js-demo-microservice-employeeadmin/tree/2.0.0)
