@@ -12,9 +12,6 @@ import {StartupCommand} from "./controller/StartupCommand.js";
 export class ApplicationFacade extends Facade {
 
     static STARTUP = "startup";
-    static SERVICE = "service";
-    static SERVICE_RESULT= "service_result";
-    static SERVICE_FAULT = "service_fault";
 
     constructor(multitonKey) {
         super(multitonKey);

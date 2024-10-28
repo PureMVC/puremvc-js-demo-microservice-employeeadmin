@@ -12,8 +12,6 @@ import path from "node:path";
 import mysql from "mysql";
 
 import {SimpleCommand} from "@puremvc/puremvc-js-multicore-framework";
-import {ApplicationFacade} from "../ApplicationFacade.js";
-import {ServiceCommand} from "./ServiceCommand.js";
 import {ServiceProxy} from "../model/ServiceProxy.js";
 import {ServiceMediator} from "../view/ServiceMediator.js";
 import {Service} from "../view/components/Service.js";
@@ -52,7 +50,6 @@ export class StartupCommand extends SimpleCommand {
 
         mySQL.tryConnecting()
             .then(() => {
-                this.facade.registerCommand(ApplicationFacade.SERVICE, () => new ServiceCommand());
                 this.facade.registerProxy(new ServiceProxy(mySQL, new UserData(), new RoleData()));
                 this.facade.registerMediator(new ServiceMediator(new Service(options)));
             });

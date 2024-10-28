@@ -7,53 +7,26 @@
 //
 
 import {Mediator} from "@puremvc/puremvc-js-multicore-framework";
-import {ApplicationFacade} from "../ApplicationFacade.js";
-import { EventEmitter } from "events";
+import {ServiceProxy} from "../model/ServiceProxy.js";
+import {schema} from "../model/graphQL/schema.js";
+import {resolvers} from "../model/graphQL/resolvers.js";
 
 export class ServiceMediator extends Mediator {
 
     static NAME = "ServiceMediator";
 
-    handler = ({request, response, requestData}) => {
-        this.service(request, response, requestData);
-    }
-
     constructor(service) {
         super(ServiceMediator.NAME, service);
     }
 
-    onRegister() {
-        this.emitter = new EventEmitter();
-        this.emitter.on("service", this.handler);
-        this.viewComponent.startup(this.emitter);
+    async onRegister() {
+        const serviceProxy = /** @type {ServiceProxy} */  this.facade.retrieveProxy(ServiceProxy.NAME);
+        await this.component.startup(schema, resolvers(serviceProxy));
     }
 
-    onRemove() {
-        this.emitter.off("service", this.handler);
-    }
-
-    service(request, response, requestData) {
-        this.facade.sendNotification(ApplicationFacade.SERVICE, {request, response, requestData});
-    }
-
-    listNotificationInterests() {
-        return [
-            ApplicationFacade.SERVICE_RESULT,
-            ApplicationFacade.SERVICE_FAULT
-        ];
-    }
-
-    handleNotification(notification) {
-        const { request, response, resultData } = notification.body;
-        switch (notification.name) {
-            case ApplicationFacade.SERVICE_RESULT:
-                this.viewComponent.result(request, response, resultData);
-                break;
-
-            case ApplicationFacade.SERVICE_FAULT:
-                this.viewComponent.fault(request, response, resultData);
-                break;
-        }
+    /** @returns {Service} component */
+    get component() {
+        return this.viewComponent;
     }
 
 }

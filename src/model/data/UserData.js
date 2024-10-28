@@ -10,7 +10,7 @@ export class UserData {
 
     constructor() {}
 
-    findAllUsers(connection) {
+    findAll(connection) {
         return new Promise((resolve, reject) => {
             let sql =
                 `SELECT user.id, user.username, user.first, user.last, user.email, user.password,
@@ -46,7 +46,7 @@ export class UserData {
         });
     }
 
-    findUserById(connection, id) {
+    findById(connection, id) {
         return new Promise((resolve, reject) => {
             let sql = `
                 SELECT user.id, user.username, user.first, user.last, user.email, user.password,
@@ -83,7 +83,7 @@ export class UserData {
         });
     }
 
-    add(connection, user) {
+    save(connection, user) {
         return new Promise((resolve, reject) => {
             let sql = "INSERT INTO user(username, first, last, email, password, department_id) VALUES(?, ?, ?, ?, ?, ?)";
             let values = [user.username, user.first, user.last, user.email, user.password, user.department.id];
