@@ -18,6 +18,7 @@ services:
   database:
     container_name: mysql
     image: mysql:5.7
+    platform: linux/amd64
     env_file: .env
     restart: on-failure
     volumes:
@@ -35,6 +36,7 @@ services:
   adminer:
     container_name: adminer
     image: adminer
+    platform: linux/amd64
     restart: always
     ports:
       - "8080:8080"
