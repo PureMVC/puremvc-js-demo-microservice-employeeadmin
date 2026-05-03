@@ -1,0 +1,15 @@
+###
+GET http://localhost/users
+Accept: application/json
+
+###
+GET http://localhost/users/1
+Accept: application/json
+
+###
+GET http://localhost/users/1/roles
+Accept: application/json
+
+###
+GET http://localhost/departments
+Accept: application/json
