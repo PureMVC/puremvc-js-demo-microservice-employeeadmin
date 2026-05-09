@@ -1,0 +1,30 @@
+### Find All Roles
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "query FindAllRoles { findAllRoles { id name } }",
+  "variables": {}
+}
+
+### Find Roles By ID
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "query FindRolesById($id: ID!) { findRolesById(id: $id) { id name } }",
+  "variables": {
+    "id": "2"
+  }
+}
+
+### Update Roles By ID
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "mutation UpdateRolesById($id: ID!, $roles: [IRole!]) { updateRolesById(id: $id, roles: $roles) }",
+  "variables": {
+    "id": "1", "roles": [{"id": "1", "name": ""}]
+  }
+}

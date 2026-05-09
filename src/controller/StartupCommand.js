@@ -9,7 +9,7 @@
 import {readFileSync} from 'fs';
 import {fileURLToPath} from 'url';
 import path from "node:path";
-import mysql from "mysql";
+import mysql from "mysql2";
 
 import {SimpleCommand} from "@puremvc/puremvc-js-multicore-framework";
 import {ServiceProxy} from "../model/ServiceProxy.js";

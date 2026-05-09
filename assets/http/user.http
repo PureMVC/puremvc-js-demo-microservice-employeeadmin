@@ -1,0 +1,68 @@
+### Find All Users
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "query FindAll { findAll { id username first last email password department { id name } roles { id name } } }"
+}
+
+### Find User By ID
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "query FindUserById($id: ID!) { findById(id: $id) { id username first last email password department { id name } } }",
+  "variables": {"id": "1"}
+}
+
+### Save User
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "mutation save($username: String!, $first: String!, $last: String!, $email: String!, $password: String!, $department: IDepartment!) { save(username: $username, first: $first, last: $last, email: $email, password: $password, department: $department) { id username first last email password department { id name } roles { id name } } }",
+  "variables": {
+    "username": "sshemp", "first": "Shemp", "last": "Stooges", "email": "sshemp@stooges.com", "password": "xyz987", "department": {"id": "1", "name": ""}
+  }
+}
+
+### Save User
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "mutation SaveUser($username: String!, $first: String!, $last: String!, $email: String!, $password: String!, $department: IDepartment!) { save(username: $username, first: $first, last: $last, email: $email, password: $password, department: $department) { id username first last email password department { id name } roles { id name } } }",
+  "variables": {
+    "username": "sshemp", "first": "Shemp", "last": "Stooges", "email": "sshemp@stooges.com", "password": "xyz987", "department": {"id": "1", "name": ""}
+  }
+}
+
+### Update User
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "mutation update($id: ID!, $username: String!, $first: String!, $last: String!, $email: String!, $password: String!, $department: IDepartment!) { update(id: $id, username: $username, first: $first, last: $last, email: $email, password: $password, department: $department) { id username first last email password department { id name } roles { id name } } }",
+  "variables": {
+    "id": "6", "username": "sshemp", "first": "Shemp", "last": "Stooge", "email": "sshemp@stooges.com", "password": "xyz987", "department": { "id": "1", "name": "" }
+  }
+}
+
+### Delete User By ID
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "mutation DeleteUserById($id: ID!) { deleteById(id: $id) }",
+  "variables": {"id": "7"}
+}
+
+### Find All Departments
+POST http://localhost
+Content-Type: application/json
+
+{
+  "query": "query FindAllDepartments { findAllDepartments { id name } }",
+  "variables": {}
+}
+

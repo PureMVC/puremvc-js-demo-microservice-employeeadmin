@@ -17,7 +17,7 @@ services:
 
   database:
     container_name: mysql
-    image: mysql:5.7
+    image: mysql:8.0
     env_file: .env
     restart: on-failure
     volumes:

@@ -1,4 +1,4 @@
-FROM node:16-alpine
+FROM node:22
 
 # Set the working directory inside the container
 WORKDIR /service
