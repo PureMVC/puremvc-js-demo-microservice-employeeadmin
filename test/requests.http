@@ -1,0 +1,161 @@
+### FindAll
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "query FindAll { findAll { id username first last email } }"
+}
+
+### FindById
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "query FindById($id: ID!) { findById(id: $id) { id username first last email password department { id name } roles { id name } } }",
+  "variables": {
+    "id": 1
+  }
+}
+
+### FindRolesByUserId #1
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "query FindRolesByUserId($id: ID!) { findRolesByUserId(id: $id) { id name } }",
+  "variables": {
+    "id": 1
+  }
+}
+
+### FindRolesByUserId #2
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "query FindRolesByUserId($id: ID!) { findRolesByUserId(id: $id) { id name } }",
+  "variables": {
+    "id": 2
+  }
+}
+
+### FindRolesByUserId #3
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "query FindRolesByUserId($id: ID!) { findRolesByUserId(id: $id) { id name } }",
+  "variables": {
+    "id": 3
+  }
+}
+
+### FindAllDepartments
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "query FindAllDepartments { findAllDepartments { id name } }"
+}
+
+### FindAllRoles
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "query FindAllRoles { findAllRoles { id name } }"
+}
+
+### Save
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "mutation Save($username: String!, $first: String!, $last: String!, $email: String!, $password: String!, $department: IDepartment!, $roles: [IRole!]) { save(username: $username, first: $first, last: $last, email: $email, password: $password, department: $department, roles: $roles) { id username first last email department { id name } roles { id name } } }",
+  "variables": {
+    "username": "sshemp",
+    "first": "Shemp",
+    "last": "Stooge",
+    "email": "sshemp@stooges.com",
+    "password": "ghi123",
+    "department": {
+      "id": "2",
+      "name": "Sales"
+    },
+    "roles": [
+      {
+        "id": "2",
+        "name": "Accounts Payable"
+      }
+    ]
+  }
+}
+
+### Update
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "mutation Update($id: ID!, $username: String!, $first: String!, $last: String!, $email: String!, $password: String!, $department: IDepartment!, $roles: [IRole!]) { update(id: $id, username: $username, first: $first, last: $last, email: $email, password: $password, department: $department, roles: $roles) { id username first last email department { id name } roles { id name } } }",
+  "variables": {
+    "id": 4,
+    "username": "sshemp",
+    "first": "Shemp",
+    "last": "Stooge",
+    "email": "sshemp@stooges.com",
+    "password": "ghi123",
+    "department": {
+      "id": "2",
+      "name": "Sales"
+    },
+    "roles": [
+      {
+        "id": "1",
+        "name": "Administrator"
+      }
+    ]
+  }
+}
+
+### UpdateRolesByUserId
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "mutation UpdateRolesByUserId($id: ID!, $roles: [IRole!]!) { updateRolesByUserId(id: $id, roles: $roles) }",
+  "variables": {
+    "id": 4,
+    "roles": [
+      {
+        "id": "1",
+        "name": "Administrator"
+      },
+      {
+        "id": "2",
+        "name": "Accounts Payable"
+      }
+    ]
+  }
+}
+
+### DeleteById
+POST http://localhost/graphql
+Content-Type: application/json
+Accept: application/json
+
+{
+  "query": "mutation DeleteById($id: ID!) { deleteById(id: $id) }",
+  "variables": {
+    "id": 4
+  }
+}

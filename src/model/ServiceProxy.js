@@ -47,7 +47,7 @@ export class ServiceProxy extends Proxy {
             await this.mySQL.beginTransaction(connection);
             const result = await this.userData.save(connection, user);
             if (user.roles && user.roles.length > 0)
-                await this.roleData.updateRolesById(connection, result.body.id, user.roles);
+                await this.roleData.updateRolesByUserId(connection, result.body.id, user.roles);
             await this.mySQL.commit(connection);
             return result;
         } catch(error) {
@@ -64,9 +64,9 @@ export class ServiceProxy extends Proxy {
             await this.mySQL.beginTransaction(connection);
             const result = await this.userData.update(connection, user);
             if (user.roles) {
-                await this.roleData.deleteRolesById(connection, user.id);
+                await this.roleData.deleteRolesByUserId(connection, user.id);
                 if (user.roles.length > 0)
-                    await this.roleData.updateRolesById(connection, user.id, user.roles)
+                    await this.roleData.updateRolesByUserId(connection, user.id, user.roles)
             }
             await this.mySQL.commit(connection);
             result.body = user;
@@ -112,10 +112,10 @@ export class ServiceProxy extends Proxy {
         }
     }
 
-    async findRolesById(id) {
+    async findRolesByUserId(id) {
         const connection = await this.mySQL.getConnection();
         try {
-            return await this.roleData.findRolesById(connection, id);
+            return await this.roleData.findRolesByUserId(connection, id);
         } catch(error) {
             throw error;
         } finally {
@@ -123,13 +123,13 @@ export class ServiceProxy extends Proxy {
         }
     }
 
-    async updateRolesById(id, roles) {
+    async updateRolesByUserId(id, roles) {
         const connection = await this.mySQL.getConnection();
         try {
             await this.mySQL.beginTransaction(connection);
-            await this.roleData.deleteRolesById(connection, id);
+            await this.roleData.deleteRolesByUserId(connection, id);
             if (roles.length > 0)
-                await this.roleData.updateRolesById(connection, id, roles);
+                await this.roleData.updateRolesByUserId(connection, id, roles);
             await this.mySQL.commit(connection);
             return {status: 200, body: roles};
         } catch (error) {

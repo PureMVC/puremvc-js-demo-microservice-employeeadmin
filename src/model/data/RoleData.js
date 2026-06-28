@@ -19,7 +19,7 @@ export class RoleData {
         });
     }
 
-    findRolesById(connection, id) {
+    findRolesByUserId(connection, id) {
         return new Promise((resolve, reject) => {
             let sql = `
                 SELECT role.id, role.name FROM role
@@ -31,7 +31,7 @@ export class RoleData {
         });
     }
 
-    deleteRolesById(connection, id) {
+    deleteRolesByUserId(connection, id) {
         return new Promise((resolve, reject) => {
             let sql = "DELETE FROM user_role WHERE user_id = ?;"
             let values = [id];
@@ -41,7 +41,7 @@ export class RoleData {
         });
     }
 
-    updateRolesById(connection, userId, roles) {
+    updateRolesByUserId(connection, userId, roles) {
         return new Promise((resolve, reject) => {
             let sql = "INSERT INTO user_role(user_id, role_id) VALUES ?;"
             let values = roles.map(({id}) => [userId, id]);
