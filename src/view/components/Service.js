@@ -18,7 +18,8 @@ export class Service {
     async startup(typeDefs, resolvers) {
         const { url } = await startStandaloneServer(new ApolloServer({
             typeDefs,
-            resolvers
+            resolvers,
+            introspection: true,
         }), { listen: {port: 80} });
 
         console.log("HTTP Server running on", url);
